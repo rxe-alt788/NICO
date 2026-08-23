@@ -33,8 +33,11 @@ BEACHES = {
     "cronulla": "Cronulla",
     "balmoral": "Balmoral",
 }
-START = datetime(2020, 1, 1, 0, 0)
-END = datetime(2026, 8, 20, 23, 0)
+# Fixture scope intentionally matches the empirical evaluation window. Generating
+# six years of synthetic hourly rows would bloat the repository without improving
+# the 18-month validation test.
+START = datetime(2025, 2, 23, 0, 0)
+END = datetime(2026, 8, 23, 23, 0)
 
 
 def daterange_hours(start: datetime, end: datetime):
@@ -62,7 +65,6 @@ def generate_environmental_fixtures() -> None:
     rng = random.Random(42)
     dates = list(daterange_hours(START, END))
 
-    # Shared synthetic rain driver, emitted through the BOM adapter contract.
     rainfall = []
     turbidity = []
     current_turb = 2.0
@@ -79,11 +81,7 @@ def generate_environmental_fixtures() -> None:
         w.writeheader()
         for ts, rain in zip(dates, rainfall):
             for bid in BEACHES:
-                w.writerow({
-                    "timestamp": ts.isoformat(sep=" "), "beach_id": bid,
-                    "rainfall_mm": round(rain, 4), "synthetic_flag": "true",
-                    "source_class": "SYNTHETIC_ENGINEERING_FIXTURE"
-                })
+                w.writerow({"timestamp": ts.isoformat(sep=" "), "beach_id": bid, "rainfall_mm": round(rain, 4), "synthetic_flag": "true", "source_class": "SYNTHETIC_ENGINEERING_FIXTURE"})
 
     with (RAW / "waternsw_history.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["timestamp", "beach_id", "station_id", "turbidity_ntu", "discharge_m3s", "synthetic_flag", "source_class"])
@@ -91,12 +89,7 @@ def generate_environmental_fixtures() -> None:
         for ts, turb, rain in zip(dates, turbidity, rainfall):
             discharge = max(0.2, 2.5 + rain * 6.0 + rng.gauss(0, 0.25))
             for bid in BEACHES:
-                w.writerow({
-                    "timestamp": ts.isoformat(sep=" "), "beach_id": bid,
-                    "station_id": "WATERNSW_SYD_ESTUARY_FIXTURE",
-                    "turbidity_ntu": round(turb, 2), "discharge_m3s": round(discharge, 2),
-                    "synthetic_flag": "true", "source_class": "SYNTHETIC_ENGINEERING_FIXTURE"
-                })
+                w.writerow({"timestamp": ts.isoformat(sep=" "), "beach_id": bid, "station_id": "WATERNSW_SYD_ESTUARY_FIXTURE", "turbidity_ntu": round(turb, 2), "discharge_m3s": round(discharge, 2), "synthetic_flag": "true", "source_class": "SYNTHETIC_ENGINEERING_FIXTURE"})
 
     with (RAW / "imos_sst_history.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["timestamp", "beach_id", "station_id", "sst_c", "upwelling_index", "acoustic_density_pct", "synthetic_flag", "source_class"])
@@ -107,12 +100,7 @@ def generate_environmental_fixtures() -> None:
             upwelling = 0.9 * math.sin(2 * math.pi * doy / 45.0) + rng.gauss(0, 0.25)
             acoustic = min(1.0, max(0.0, 0.35 + 0.2 * math.sin(2 * math.pi * (doy - 20) / 365.0) + rng.gauss(0, 0.08)))
             for bid in BEACHES:
-                w.writerow({
-                    "timestamp": ts.isoformat(sep=" "), "beach_id": bid,
-                    "station_id": "IMOS_SYD_OFFSHORE_FIXTURE", "sst_c": round(sst, 2),
-                    "upwelling_index": round(upwelling, 3), "acoustic_density_pct": round(acoustic, 3),
-                    "synthetic_flag": "true", "source_class": "SYNTHETIC_ENGINEERING_FIXTURE"
-                })
+                w.writerow({"timestamp": ts.isoformat(sep=" "), "beach_id": bid, "station_id": "IMOS_SYD_OFFSHORE_FIXTURE", "sst_c": round(sst, 2), "upwelling_index": round(upwelling, 3), "acoustic_density_pct": round(acoustic, 3), "synthetic_flag": "true", "source_class": "SYNTHETIC_ENGINEERING_FIXTURE"})
 
     with (RAW / "beachwatch_history.csv").open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=["date", "beach_id", "site", "enterococci", "water_temp_c", "synthetic_flag", "source_class"])
@@ -122,13 +110,8 @@ def generate_environmental_fixtures() -> None:
             doy = day.timetuple().tm_yday
             water_temp = 19.5 + 3.5 * math.sin(2 * math.pi * (doy - 60) / 365.0)
             for bid, site in BEACHES.items():
-                # deterministic lognormal-style fixture using exp(normal)
                 enterococci = int(math.exp(rng.gauss(2.0, 1.0)))
-                w.writerow({
-                    "date": day.date().isoformat(), "beach_id": bid, "site": site,
-                    "enterococci": enterococci, "water_temp_c": round(water_temp, 1),
-                    "synthetic_flag": "true", "source_class": "SYNTHETIC_ENGINEERING_FIXTURE"
-                })
+                w.writerow({"date": day.date().isoformat(), "beach_id": bid, "site": site, "enterococci": enterococci, "water_temp_c": round(water_temp, 1), "synthetic_flag": "true", "source_class": "SYNTHETIC_ENGINEERING_FIXTURE"})
             day += timedelta(days=1)
 
     print(f"Synthetic fixture files written under {RAW}")
