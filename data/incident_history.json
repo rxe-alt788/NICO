@@ -1,29 +1,105 @@
 {
-  "schemaVersion": "0.2.0",
-  "window": {
-    "start": "2026-01-15T16:20:00+11:00",
-    "end": "2026-01-20T16:20:00+11:00",
-    "description": "Pilot replay window spanning 72 hours before the 18 January 2026 Vaucluse incident through 24 hours after the 19 January North Steyne incident."
+  "schemaVersion": "0.3.0",
+  "coverage": {
+    "description": "2026 NSW incidents currently identified in public reporting for pilot comparison. DPI/ASID reconciliation is required before evidentiary use.",
+    "verifiedPublicSet": ["vaucluse-2026-01-18", "dee-why-2026-01-19", "north-steyne-2026-01-19", "point-plomer-2026-01-20", "coogee-2026-06-13"],
+    "note": "No verified 2026 Cronulla bite was located during this assembly; Cronulla remains a pilot beach but is not fabricated as an incident location."
   },
   "provenance": {
-    "incidentTimes": "Public incident timing is based on contemporaneous authoritative/public reporting and must be replaced or reconciled with DPI incident records before formal use.",
-    "environmentalSnapshots": "SYNTHETIC_PILOT_SCENARIO. Rainfall, turbidity percentile and SST anomaly values below are demonstration inputs, not claimed measured observations. They exist to exercise the rules engine until authoritative BOM/Beachwatch/IMOS time series are ingested.",
-    "surveillanceSnapshots": "SYNTHETIC_PILOT_SCENARIO except where an incident note records a publicly reported operational response."
+    "incidentTimes": "Incident times/locations are based on contemporaneous public reporting and must be reconciled with NSW DPI/DPIRD and Australian Shark-Incident Database records.",
+    "environmentalProfiles": "SYNTHETIC_COUNTERFACTUAL_INPUTS. Profiles demonstrate lead-time, alert-frequency and UI mechanics. They are not claimed measured BOM, Beachwatch or IMOS observations.",
+    "baseline": "WITHOUT_4NICO means no integrated beach-level advisory from this prototype, not absence of existing SharkSmart/lifeguard advice."
   },
-  "events": [
-    {"timestamp":"2026-01-18T16:20:00+11:00","beachId":"balmoral","type":"SERIOUS_INCIDENT_NEARBY","location":"Hermitage Foreshore Walk / Shark Beach, Vaucluse","note":"Large shark bite reported; critical leg injuries. Balmoral is used only as the harbour pilot card and is not the incident location."},
-    {"timestamp":"2026-01-19T11:45:00+11:00","beachId":"north-steyne","type":"ENCOUNTER_NEARBY","location":"Dee Why Beach","note":"Young surfer reportedly uninjured after shark bit surfboard."},
-    {"timestamp":"2026-01-19T18:20:00+11:00","beachId":"north-steyne","type":"SERIOUS_INCIDENT","location":"North Steyne Beach, Manly","note":"Surfer suffered serious leg injuries; northern beaches subsequently closed."}
-  ],
-  "snapshots": [
-    {"timestamp":"2026-01-15T16:20:00+11:00","label":"T-72h","global":{"rainPct":0.42,"sstAnomaly":0.8},"beaches":{}},
-    {"timestamp":"2026-01-16T16:20:00+11:00","label":"T-48h","global":{"rainPct":0.68,"sstAnomaly":0.9},"beaches":{"balmoral":{"turbidityPct":0.45},"north-steyne":{"turbidityPct":0.38}}},
-    {"timestamp":"2026-01-17T16:20:00+11:00","label":"T-24h","global":{"rainPct":0.82,"sstAnomaly":1.1},"beaches":{"balmoral":{"turbidityPct":0.64},"north-steyne":{"turbidityPct":0.52},"palm-beach":{"turbidityPct":0.48},"bondi":{"turbidityPct":0.44},"coogee":{"turbidityPct":0.46},"cronulla":{"turbidityPct":0.55}}},
-    {"timestamp":"2026-01-18T10:20:00+11:00","label":"T-6h","global":{"rainPct":0.93,"sstAnomaly":1.4},"beaches":{"balmoral":{"turbidityPct":0.86},"north-steyne":{"turbidityPct":0.70},"palm-beach":{"turbidityPct":0.66},"bondi":{"turbidityPct":0.61},"coogee":{"turbidityPct":0.63},"cronulla":{"turbidityPct":0.74}}},
-    {"timestamp":"2026-01-18T16:20:00+11:00","label":"Vaucluse incident","global":{"rainPct":0.95,"sstAnomaly":1.5},"beaches":{"balmoral":{"turbidityPct":0.91,"recentTagDetected":false,"surveillance":{"droneActive":false,"lifeguardActive":true,"turbidityDataOk":true}},"north-steyne":{"turbidityPct":0.78},"palm-beach":{"turbidityPct":0.72},"bondi":{"turbidityPct":0.68},"coogee":{"turbidityPct":0.69},"cronulla":{"turbidityPct":0.79}}},
-    {"timestamp":"2026-01-19T11:45:00+11:00","label":"Dee Why encounter","global":{"rainPct":0.94,"sstAnomaly":1.5},"beaches":{"north-steyne":{"turbidityPct":0.84,"recentTagDetected":false,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},"palm-beach":{"turbidityPct":0.77},"balmoral":{"turbidityPct":0.89},"bondi":{"turbidityPct":0.70},"coogee":{"turbidityPct":0.71},"cronulla":{"turbidityPct":0.80}}},
-    {"timestamp":"2026-01-19T18:20:00+11:00","label":"North Steyne incident","global":{"rainPct":0.91,"sstAnomaly":1.4},"beaches":{"north-steyne":{"turbidityPct":0.87,"recentTagDetected":false,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},"palm-beach":{"turbidityPct":0.80},"balmoral":{"turbidityPct":0.86},"bondi":{"turbidityPct":0.72},"coogee":{"turbidityPct":0.73},"cronulla":{"turbidityPct":0.82}}},
-    {"timestamp":"2026-01-20T04:20:00+11:00","label":"Post +10h","global":{"rainPct":0.86,"sstAnomaly":1.3},"beaches":{"north-steyne":{"turbidityPct":0.81,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":true}},"palm-beach":{"turbidityPct":0.76},"balmoral":{"turbidityPct":0.82},"bondi":{"turbidityPct":0.68},"coogee":{"turbidityPct":0.69},"cronulla":{"turbidityPct":0.78}}},
-    {"timestamp":"2026-01-20T16:20:00+11:00","label":"Post +24h","global":{"rainPct":0.79,"sstAnomaly":1.2},"beaches":{"north-steyne":{"turbidityPct":0.72},"palm-beach":{"turbidityPct":0.68},"balmoral":{"turbidityPct":0.75},"bondi":{"turbidityPct":0.61},"coogee":{"turbidityPct":0.62},"cronulla":{"turbidityPct":0.70}}}
+  "incidents": [
+    {
+      "id": "vaucluse-2026-01-18",
+      "name": "Vaucluse / Shark Beach",
+      "timestamp": "2026-01-18T16:20:00+11:00",
+      "beachId": "balmoral",
+      "location": "Hermitage Foreshore Walk near Shark Beach, Vaucluse",
+      "eventClass": "SERIOUS_BITE_FATAL_OUTCOME",
+      "speciesContext": "Suspected bull shark in public reporting",
+      "profile": [
+        {"hoursToEvent":-72,"rainPct":0.42,"turbidityPct":0.35,"sstAnomaly":0.8,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-48,"rainPct":0.68,"turbidityPct":0.45,"sstAnomaly":0.9,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-36,"rainPct":0.78,"turbidityPct":0.55,"sstAnomaly":1.0,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-24,"rainPct":0.82,"turbidityPct":0.64,"sstAnomaly":1.1,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-12,"rainPct":0.91,"turbidityPct":0.81,"sstAnomaly":1.3,"surveillance":{"droneActive":false,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-6,"rainPct":0.93,"turbidityPct":0.86,"sstAnomaly":1.4,"surveillance":{"droneActive":false,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":0,"rainPct":0.95,"turbidityPct":0.91,"sstAnomaly":1.5,"surveillance":{"droneActive":false,"lifeguardActive":true,"turbidityDataOk":true}}
+      ]
+    },
+    {
+      "id": "dee-why-2026-01-19",
+      "name": "Dee Why",
+      "timestamp": "2026-01-19T11:45:00+11:00",
+      "beachId": "north-steyne",
+      "location": "Dee Why Beach",
+      "eventClass": "BOARD_BITE_NO_PHYSICAL_INJURY",
+      "speciesContext": "Not treated as confirmed species in prototype",
+      "profile": [
+        {"hoursToEvent":-72,"rainPct":0.58,"turbidityPct":0.39,"sstAnomaly":0.9,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-48,"rainPct":0.78,"turbidityPct":0.53,"sstAnomaly":1.1,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-36,"rainPct":0.86,"turbidityPct":0.63,"sstAnomaly":1.2,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-24,"rainPct":0.92,"turbidityPct":0.72,"sstAnomaly":1.4,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-12,"rainPct":0.95,"turbidityPct":0.81,"sstAnomaly":1.5,"surveillance":{"droneActive":true,"lifeguardActive":false,"turbidityDataOk":true}},
+        {"hoursToEvent":-6,"rainPct":0.95,"turbidityPct":0.84,"sstAnomaly":1.5,"surveillance":{"droneActive":true,"lifeguardActive":false,"turbidityDataOk":true}},
+        {"hoursToEvent":0,"rainPct":0.94,"turbidityPct":0.84,"sstAnomaly":1.5,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}}
+      ]
+    },
+    {
+      "id": "north-steyne-2026-01-19",
+      "name": "North Steyne / Manly",
+      "timestamp": "2026-01-19T18:20:00+11:00",
+      "beachId": "north-steyne",
+      "location": "North Steyne Beach, Manly",
+      "eventClass": "SERIOUS_BITE",
+      "speciesContext": "Bull shark considered likely by DPIRD based on bite characteristics in public reporting",
+      "profile": [
+        {"hoursToEvent":-72,"rainPct":0.64,"turbidityPct":0.42,"sstAnomaly":1.0,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-48,"rainPct":0.82,"turbidityPct":0.56,"sstAnomaly":1.2,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-36,"rainPct":0.89,"turbidityPct":0.67,"sstAnomaly":1.3,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-24,"rainPct":0.94,"turbidityPct":0.76,"sstAnomaly":1.5,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-12,"rainPct":0.94,"turbidityPct":0.84,"sstAnomaly":1.5,"surveillance":{"droneActive":true,"lifeguardActive":false,"turbidityDataOk":true}},
+        {"hoursToEvent":-6,"rainPct":0.92,"turbidityPct":0.86,"sstAnomaly":1.5,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":true}},
+        {"hoursToEvent":0,"rainPct":0.91,"turbidityPct":0.87,"sstAnomaly":1.4,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":true}}
+      ]
+    },
+    {
+      "id": "point-plomer-2026-01-20",
+      "name": "Point Plomer",
+      "timestamp": "2026-01-20T09:00:00+11:00",
+      "beachId": "point-plomer",
+      "location": "Point Plomer, Mid North Coast NSW",
+      "eventClass": "BITE_MINOR_INJURY",
+      "speciesContext": "Suspected bull shark in public reporting",
+      "profile": [
+        {"hoursToEvent":-72,"rainPct":0.55,"turbidityPct":0.40,"sstAnomaly":0.8,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":false}},
+        {"hoursToEvent":-48,"rainPct":0.74,"turbidityPct":0.49,"sstAnomaly":0.9,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":false}},
+        {"hoursToEvent":-36,"rainPct":0.80,"turbidityPct":0.58,"sstAnomaly":1.0,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":false}},
+        {"hoursToEvent":-24,"rainPct":0.87,"turbidityPct":0.69,"sstAnomaly":1.1,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":false}},
+        {"hoursToEvent":-12,"rainPct":0.93,"turbidityPct":0.79,"sstAnomaly":1.2,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":false}},
+        {"hoursToEvent":-6,"rainPct":0.94,"turbidityPct":0.83,"sstAnomaly":1.3,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":false}},
+        {"hoursToEvent":0,"rainPct":0.92,"turbidityPct":0.85,"sstAnomaly":1.3,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":false}}
+      ]
+    },
+    {
+      "id": "coogee-2026-06-13",
+      "name": "Coogee",
+      "timestamp": "2026-06-13T10:55:00+10:00",
+      "beachId": "coogee",
+      "location": "Coogee Beach, Sydney",
+      "eventClass": "SERIOUS_BITE",
+      "speciesContext": "Suspected white shark in public reporting",
+      "profile": [
+        {"hoursToEvent":-72,"rainPct":0.31,"turbidityPct":0.28,"sstAnomaly":0.4,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-48,"rainPct":0.35,"turbidityPct":0.30,"sstAnomaly":0.5,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-36,"rainPct":0.38,"turbidityPct":0.32,"sstAnomaly":0.5,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-24,"rainPct":0.41,"turbidityPct":0.34,"sstAnomaly":0.6,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-12,"rainPct":0.44,"turbidityPct":0.35,"sstAnomaly":0.6,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":-6,"rainPct":0.45,"turbidityPct":0.36,"sstAnomaly":0.6,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},
+        {"hoursToEvent":0,"rainPct":0.46,"turbidityPct":0.37,"sstAnomaly":0.6,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}}
+      ]
+    }
   ]
 }
