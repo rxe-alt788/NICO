@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <rect width="1400" height="900" fill="#ffffff"/>
+  <style>
+    .title{font:700 38px Arial,sans-serif;fill:#111}.sub{font:20px Arial,sans-serif;fill:#444}.head{font:700 22px Arial,sans-serif;fill:#111}.celltitle{font:700 21px Arial,sans-serif;fill:#111}.body{font:17px Arial,sans-serif;fill:#222}.note{font:700 18px Arial,sans-serif;fill:#111}.small{font:16px Arial,sans-serif;fill:#444}
+  </style>
+  <text x="70" y="65" class="title">4NICO composite state grid</text>
+  <text x="70" y="100" class="sub">Environmental condition × observation confidence. Neither axis substitutes for the other.</text>
+
+  <text x="255" y="155" class="head" text-anchor="middle">HIGH</text>
+  <text x="650" y="155" class="head" text-anchor="middle">MODERATE</text>
+  <text x="1045" y="155" class="head" text-anchor="middle">BLACKOUT</text>
+
+  <text x="48" y="285" class="head" transform="rotate(-90 48 285)" text-anchor="middle">GREEN</text>
+  <text x="48" y="500" class="head" transform="rotate(-90 48 500)" text-anchor="middle">ORANGE</text>
+  <text x="48" y="715" class="head" transform="rotate(-90 48 715)" text-anchor="middle">RED</text>
+
+  <g stroke="#c9c9c9" stroke-width="2">
+    <rect x="85" y="180" width="360" height="185" rx="12" fill="#eef8ef"/><rect x="470" y="180" width="360" height="185" rx="12" fill="#f4f9ef"/><rect x="855" y="180" width="360" height="185" rx="12" fill="#f2f2f2"/>
+    <rect x="85" y="395" width="360" height="185" rx="12" fill="#fff4df"/><rect x="470" y="395" width="360" height="185" rx="12" fill="#fff0d1"/><rect x="855" y="395" width="360" height="185" rx="12" fill="#f0ece5"/>
+    <rect x="85" y="610" width="360" height="185" rx="12" fill="#fdeaea"/><rect x="470" y="610" width="360" height="185" rx="12" fill="#fbdede"/><rect x="855" y="610" width="360" height="185" rx="12" fill="#eee5e5"/>
+  </g>
+
+  <g>
+    <text x="110" y="220" class="celltitle">GREEN_HIGH</text><text x="110" y="255" class="body">Lower configured conditions;</text><text x="110" y="280" class="body">well observed. Maintain routine</text><text x="110" y="305" class="body">operations and surveillance.</text>
+    <text x="495" y="220" class="celltitle">GREEN_MODERATE</text><text x="495" y="255" class="body">Lower configured conditions;</text><text x="495" y="280" class="body">partial observation. Continue,</text><text x="495" y="305" class="body">but note reduced confidence.</text>
+    <text x="880" y="220" class="celltitle">GREEN_BLACK</text><text x="880" y="255" class="body">Lower configured conditions, but</text><text x="880" y="280" class="body">observation is materially degraded.</text><text x="880" y="305" class="body">Do not read silence as safety.</text>
+
+    <text x="110" y="435" class="celltitle">ORANGE_HIGH</text><text x="110" y="470" class="body">Elevated configured conditions;</text><text x="110" y="495" class="body">well observed. Increase attention</text><text x="110" y="520" class="body">and operational readiness.</text>
+    <text x="495" y="435" class="celltitle">ORANGE_MODERATE</text><text x="495" y="470" class="body">Elevated conditions with partial</text><text x="495" y="495" class="body">observation. Increase caution and</text><text x="495" y="520" class="body">restore coverage where possible.</text>
+    <text x="880" y="435" class="celltitle">ORANGE_BLACK</text><text x="880" y="470" class="body">Elevated conditions and poor</text><text x="880" y="495" class="body">visibility. Treat uncertainty as an</text><text x="880" y="520" class="body">operational constraint.</text>
+
+    <text x="110" y="650" class="celltitle">RED_HIGH</text><text x="110" y="685" class="body">Concerning configured conditions;</text><text x="110" y="710" class="body">well observed. Act now under local</text><text x="110" y="735" class="body">operational procedures.</text>
+    <text x="495" y="650" class="celltitle">RED_MODERATE</text><text x="495" y="685" class="body">Concerning conditions with partial</text><text x="495" y="710" class="body">coverage. Escalate operations and</text><text x="495" y="735" class="body">close observation gaps.</text>
+    <text x="880" y="650" class="celltitle">RED_BLACK</text><text x="880" y="685" class="body">Concerning conditions but you</text><text x="880" y="710" class="body">cannot adequately see them.</text><text x="880" y="735" class="body">Abort or restrict operations locally.</text>
+  </g>
+
+  <rect x="85" y="825" width="1130" height="48" rx="10" fill="#fafafa" stroke="#bdbdbd"/>
+  <text x="105" y="855" class="note">Hysteresis:</text><text x="225" y="855" class="small">escalate immediately; de-escalate only after the lower environmental state persists for 24 hours.</text>
+</svg>
