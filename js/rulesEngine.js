@@ -1,87 +1,80 @@
 (function () {
   'use strict';
 
-  /**
-   * 4NICO deterministic beach status evaluator.
-   *
-   * Purpose:
-   * - Communicate relative shark-related environmental conditions.
-   * - Communicate observation confidence.
-   * - NOT predict shark attacks.
-   *
-   * The scoring and resolution hierarchy below intentionally mirrors the
-   * supplied specification. No additional weights or hidden modifiers are used.
-   */
   function evaluateBeachStatus(envMetrics, surveillanceState) {
-    const {
-      rainPct,
-      turbidityPct,
-      sstAnomaly,
-      recentTagDetected
-    } = envMetrics;
+    const cfg = window.FourNICOConfig;
+    const t = cfg.thresholds;
+    const w = cfg.weights;
 
-    const {
-      droneActive,
-      lifeguardActive,
-      turbidityDataOk
-    } = surveillanceState;
+    const rainPct = Number(envMetrics.rainPct ?? 0);
+    const turbidityPct = Number(envMetrics.turbidityPct ?? 0);
+    const sstAnomaly = Number(envMetrics.sstAnomaly ?? 0);
+    const recentTagDetected = Boolean(envMetrics.recentTagDetected);
 
-    // Calculate Observation Confidence
+    const droneActive = Boolean(surveillanceState.droneActive);
+    const lifeguardActive = Boolean(surveillanceState.lifeguardActive);
+    const turbidityDataOk = Boolean(surveillanceState.turbidityDataOk);
+
     let confScore = 0;
     if (droneActive) confScore++;
     if (lifeguardActive) confScore++;
     if (turbidityDataOk) confScore++;
 
-    // Calculate Environmental Score
     let envScore = 0;
+    const rationale = [];
 
-    if (rainPct >= 0.90) envScore += 2;
-    else if (rainPct >= 0.75) envScore += 1;
-
-    if (turbidityPct >= 0.80) envScore += 2;
-    else if (turbidityPct >= 0.50) envScore += 1;
-
-    if (sstAnomaly >= 1.5) envScore += 1;
-    if (recentTagDetected) envScore += 3;
-
-    // Apply Priority Hierarchy: Black > Red > Orange > Green
-    if (confScore <= 1) {
-      return {
-        flag: 'BLACK',
-        label: 'Uncertain / No Monitoring',
-        conf: 'LOW',
-        score: envScore
-      };
+    if (rainPct >= t.rainfall.p90) {
+      envScore += w.rainP90;
+      rationale.push('72h Rainfall > 90th percentile');
+    } else if (rainPct >= t.rainfall.p75) {
+      envScore += w.rainP75;
+      rationale.push('72h Rainfall > 75th percentile');
     }
 
-    if (envScore >= 3 || recentTagDetected) {
-      return {
-        flag: 'RED',
-        label: 'High Risk Conditions',
-        conf: confScore >= 2 ? 'MED/HIGH' : 'LOW',
-        score: envScore
-      };
+    if (turbidityPct >= t.turbidity.p80) {
+      envScore += w.turbidityP80;
+      rationale.push('Turbidity > 80th percentile');
+    } else if (turbidityPct >= t.turbidity.p50) {
+      envScore += w.turbidityP50;
+      rationale.push('Turbidity > 50th percentile');
     }
 
-    if (envScore >= 2) {
-      return {
-        flag: 'ORANGE',
-        label: 'Elevated Risk Conditions',
-        conf: 'MED/HIGH',
-        score: envScore
-      };
+    if (sstAnomaly >= t.sstAnomalyC) {
+      envScore += w.sstAnomaly;
+      rationale.push(`SST anomaly >= +${t.sstAnomalyC.toFixed(1)}°C`);
     }
 
-    return {
-      flag: 'GREEN',
-      label: 'Normal Baseline',
-      conf: 'HIGH',
-      score: envScore
-    };
+    if (recentTagDetected) {
+      envScore += w.recentTag;
+      rationale.push('Recent tagged shark detection');
+    }
+
+    let envFlag = 'GREEN';
+    if (envScore >= cfg.envFlags.redMin || recentTagDetected) envFlag = 'RED';
+    else if (envScore >= cfg.envFlags.orangeMin) envFlag = 'ORANGE';
+
+    let obsState = 'HIGH';
+    if (confScore <= cfg.observation.blackoutMax) {
+      obsState = 'BLACKOUT';
+      rationale.push('Surveillance offline or materially degraded');
+    } else if (confScore === cfg.observation.moderate) {
+      obsState = 'MODERATE';
+      rationale.push('Partial surveillance coverage');
+    }
+
+    const compositeFlag = obsState === 'BLACKOUT' ? `${envFlag}_BLACK` : envFlag;
+
+    if (rationale.length === 0) rationale.push('No configured elevated-condition triggers');
+
+    return Object.freeze({
+      envFlag,
+      obsState,
+      compositeFlag,
+      envScore,
+      confScore,
+      rationale
+    });
   }
 
-  // Browser API for GitHub Pages.
-  window.FourNICO = Object.freeze({
-    evaluateBeachStatus
-  });
+  window.FourNICO = Object.freeze({ evaluateBeachStatus });
 })();
