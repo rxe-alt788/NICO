@@ -3,10 +3,11 @@
 
   const severity = Object.freeze({ GREEN: 0, ORANGE: 1, RED: 2 });
 
-  function evaluateBeachStatus(envMetrics, surveillanceState) {
+  function evaluateBeachStatus(envMetrics, surveillanceState, options) {
     const cfg = window.FourNICOConfig;
     const t = cfg.thresholds;
     const w = cfg.weights;
+    const experimentalEnabled = Boolean(options?.experimentalSecondaryCues ?? cfg.experimental.secondaryCues.enabledByDefault);
     const rainPct = Number(envMetrics.rainPct ?? 0);
     const turbidityPct = Number(envMetrics.turbidityPct ?? 0);
     const sstAnomaly = Number(envMetrics.sstAnomaly ?? 0);
@@ -29,6 +30,20 @@
     if (sstAnomaly >= t.sstAnomalyC) { envScore += w.sstAnomaly; rationale.push(`SST anomaly >= +${t.sstAnomalyC.toFixed(1)}°C`); }
     if (recentTagDetected) { envScore += w.recentTag; rationale.push('Recent tagged shark detection'); }
 
+    if (experimentalEnabled) {
+      const e = cfg.experimental.secondaryCues;
+      const upwellingAnomaly = Number(envMetrics.upwellingAnomaly ?? 0);
+      const acousticDensityPct = Number(envMetrics.acousticDensityPct ?? 0);
+      if (Math.abs(upwellingAnomaly) >= e.upwellingAnomalyThreshold) {
+        envScore += e.weights.upwellingAnomaly;
+        rationale.push('EXPERIMENTAL: upwelling anomaly threshold exceeded');
+      }
+      if (acousticDensityPct >= e.acousticDensityPctThreshold) {
+        envScore += e.weights.acousticDensity;
+        rationale.push('EXPERIMENTAL: seasonal acoustic tag density >= 90th percentile');
+      }
+    }
+
     let envFlag = 'GREEN';
     if (envScore >= cfg.envFlags.redMin || recentTagDetected) envFlag = 'RED';
     else if (envScore >= cfg.envFlags.orangeMin) envFlag = 'ORANGE';
@@ -39,7 +54,7 @@
 
     const compositeFlag = obsState === 'BLACKOUT' ? `${envFlag}_BLACK` : envFlag;
     if (!rationale.length) rationale.push('No configured elevated-condition triggers');
-    return Object.freeze({ envFlag, obsState, compositeFlag, envScore, confScore, rationale });
+    return Object.freeze({ envFlag, obsState, compositeFlag, envScore, confScore, rationale, experimentalSecondaryCues: experimentalEnabled });
   }
 
   function createHysteresisState(initialFlag) {
@@ -51,14 +66,12 @@
     const hold = Number(holdHours ?? window.FourNICOConfig.hysteresis.holdHours);
     const now = new Date(timestamp).getTime();
     const stable = state.stableFlag;
-
     if (severity[candidateFlag] >= severity[stable]) {
       state.stableFlag = candidateFlag;
       state.lowerCandidate = null;
       state.lowerSince = null;
       return { flag: state.stableFlag, held: false, remainingHours: 0, state };
     }
-
     if (state.lowerCandidate !== candidateFlag) {
       state.lowerCandidate = candidateFlag;
       state.lowerSince = timestamp;
