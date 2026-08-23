@@ -26,8 +26,8 @@
     if (prevEnv) {
       if (prevEnv.rainPct < .75 && env.rainPct >= .75) out.push(`72h Rainfall exceeded 75th percentile (${Math.round(prevEnv.rainPct*100)}th -> ${Math.round(env.rainPct*100)}th percentile)`);
       if (prevEnv.rainPct < .90 && env.rainPct >= .90) out.push(`72h Rainfall exceeded 90th percentile (${Math.round(prevEnv.rainPct*100)}th -> ${Math.round(env.rainPct*100)}th percentile)`);
-      if (prevEnv.turbidityPct < .50 && env.turbidityPct >= .50) out.push(`Water clarity reduced (turbidity crossed 50th percentile)`);
-      if (prevEnv.turbidityPct < .80 && env.turbidityPct >= .80) out.push(`Water clarity materially reduced (turbidity crossed 80th percentile)`);
+      if (prevEnv.turbidityPct < .50 && env.turbidityPct >= .50) out.push('Water clarity reduced (turbidity crossed 50th percentile)');
+      if (prevEnv.turbidityPct < .80 && env.turbidityPct >= .80) out.push('Water clarity materially reduced (turbidity crossed 80th percentile)');
       if (!prevEnv.recentTagDetected && env.recentTagDetected) out.push('New tagged-shark detection entered the recent-activity window');
     }
     return out;
@@ -90,5 +90,6 @@
   function renderCurrent() { const beach = state.beaches.find(b => b.id === state.selectedBeachId) || state.beaches[0]; if (!beach) return; const merged = window.FourNICOIngestion.mergeSnapshot(beach, state.currentSnapshot); renderPrimary(beach, merged.env, merged.surveillance); renderBeachGrid(state.currentSnapshot); }
   function init(beaches) { state.beaches = beaches; state.selectedBeachId = window.FourNICOConfig.pilot.defaultBeachId; loadOverrides(); const picker = qs('beach-picker'); picker.innerHTML = beaches.map(b => `<option value="${b.id}">${b.name}</option>`).join(''); picker.value = state.selectedBeachId; picker.addEventListener('change', () => { state.selectedBeachId = picker.value; renderCurrent(); }); renderOverrides(); renderCurrent(); }
   function setSnapshot(snapshot) { state.currentSnapshot = snapshot; renderCurrent(); }
-  window.FourNICOUI = Object.freeze({ init, setSnapshot, renderCurrent });
+  function selectBeach(id) { if (!state.beaches.some(b => b.id === id)) return false; state.selectedBeachId = id; const picker = qs('beach-picker'); if (picker) picker.value = id; renderCurrent(); return true; }
+  window.FourNICOUI = Object.freeze({ init, setSnapshot, selectBeach, renderCurrent });
 })();
