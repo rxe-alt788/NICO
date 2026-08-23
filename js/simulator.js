@@ -33,6 +33,7 @@
     slider.min = 0; slider.max = selectedIncident.profile.length - 1; slider.step = 1; slider.value = 0;
     qs('timeline-start').textContent = 'T-72h'; qs('timeline-end').textContent = 'T-0h';
     qs('incident-selector').value = selectedIncident.id;
+    window.FourNICOUI.selectBeach(selectedIncident.beachId);
     renderProfilePoint(0);
   }
 
