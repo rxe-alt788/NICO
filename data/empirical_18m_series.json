@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.5.0",
-  "generatedAt": "2026-08-23T13:19:00Z",
+  "generatedAt": "2026-08-23T13:28:39.234743+00:00",
   "evaluationWindow": {
     "start": "2025-02-23T00:00:00+11:00",
     "end": "2026-08-23T23:59:59+10:00"
@@ -11,17 +11,17 @@
     "bom": {
       "state": "MISSING",
       "source": "not_configured",
-      "note": "Supply BOM Climate Data Online daily/hourly CSV export. Public free historical data are downloadable, but extraction/download URLs are not durable and sub-daily archive extraction may require a data request."
+      "note": "Supply BOM Climate Data Online daily/hourly CSV export. Free CDO downloads exist, but extraction/download URLs are not durable."
     },
     "waternsw": {
       "state": "MISSING",
       "source": "not_configured",
-      "note": "Supply WaterInsights/WaterNSW 15-minute export or configured keyed API URL. API access requires a subscription key."
+      "note": "Supply WaterInsights/WaterNSW 15-minute export or a configured keyed API URL."
     },
     "beachwatch": {
       "state": "MISSING",
       "source": "not_configured",
-      "note": "Supply Beachwatch historical water-quality export. Turbidity is consumed only if explicitly present."
+      "note": "Supply Beachwatch historical water-quality export."
     },
     "imos": {
       "state": "MISSING",
@@ -31,7 +31,7 @@
     "incidents": {
       "state": "MISSING",
       "source": "not_configured",
-      "note": "Supply Taronga ASID / DPI export or API response. Public-report seeds are no longer treated as empirical incident records."
+      "note": "Supply Taronga ASID / DPI export. Public reporting is not silently substituted."
     }
   },
   "coverageHoursByBeach": {
