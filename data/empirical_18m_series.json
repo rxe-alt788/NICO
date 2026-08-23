@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "0.4.0",
+  "generatedAt": null,
+  "evaluationWindow": {
+    "start": "2025-02-23T00:00:00+11:00",
+    "end": "2026-08-23T23:59:59+10:00"
+  },
+  "mode": "AWAITING_ARCHIVES",
+  "qualityRule": "Null means unavailable. No synthetic environmental value is inserted into this dataset.",
+  "sourceStatus": {
+    "bom": {"state": "MISSING", "note": "Run scripts/ingest_historical.py with BOM archive input."},
+    "waternsw": {"state": "MISSING", "note": "Run with WaterNSW archive or keyed API input."},
+    "beachwatch": {"state": "MISSING", "note": "Run with Beachwatch historical export."},
+    "imos": {"state": "MISSING", "note": "Run with point-extracted IMOS/BOM marine archive."},
+    "incidents": {"state": "SEED_ONLY", "note": "Public-report seed pending DPI/ASID reconciliation."}
+  },
+  "incidents": [
+    {"id":"vaucluse-2026-01-18","timestamp":"2026-01-18T16:20:00+11:00","location":"Vaucluse / Shark Beach","beachId":"balmoral","eventClass":"SERIOUS_BITE","provenance":"public-report seed"},
+    {"id":"dee-why-2026-01-19","timestamp":"2026-01-19T11:45:00+11:00","location":"Dee Why Beach","beachId":"north-steyne","eventClass":"BOARD_BITE_NO_INJURY","provenance":"public-report seed"},
+    {"id":"north-steyne-2026-01-19","timestamp":"2026-01-19T18:20:00+11:00","location":"North Steyne Beach","beachId":"north-steyne","eventClass":"SERIOUS_BITE","provenance":"public-report seed"},
+    {"id":"point-plomer-2026-01","timestamp":null,"location":"Point Plomer","beachId":null,"eventClass":"BITE","provenance":"public-report seed; exact timestamp pending authoritative reconciliation"},
+    {"id":"coogee-2026-06-13","timestamp":"2026-06-13T11:10:00+10:00","location":"Coogee Beach","beachId":"coogee","eventClass":"SERIOUS_BITE","provenance":"public-report seed"}
+  ],
+  "beaches": {
+    "palm-beach": [],
+    "north-steyne": [],
+    "bondi": [],
+    "coogee": [],
+    "cronulla": [],
+    "balmoral": []
+  }
+}
