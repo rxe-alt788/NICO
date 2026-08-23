@@ -1,14 +1,257 @@
 {
   "schemaVersion": "0.4.0",
-  "generatedAt": null,
+  "generatedAt": "2026-08-23T13:08:28.175337+00:00",
   "qualityRule": "Missing normalized model inputs never imply low risk.",
-  "sources": {},
+  "sources": {
+    "bom": {
+      "observatory-hill": {
+        "state": "LOADED",
+        "url": "https://www.bom.gov.au/fwo/IDN60901/IDN60901.94768.json"
+      },
+      "sydney-airport": {
+        "state": "LOADED",
+        "url": "https://www.bom.gov.au/fwo/IDN60901/IDN60901.94767.json"
+      }
+    },
+    "waternsw": {
+      "state": "NOT_CONFIGURED"
+    },
+    "dpi": {
+      "state": "NOT_CONFIGURED"
+    },
+    "marine": {
+      "state": "NOT_CONFIGURED"
+    }
+  },
   "beaches": {
-    "palm-beach": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
-    "north-steyne": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
-    "bondi": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
-    "coogee": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
-    "cronulla": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
-    "balmoral": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}}
-  }
+    "palm-beach": {
+      "env": {
+        "rainPct": null,
+        "rain72hMm": null,
+        "turbidityPct": null,
+        "turbidityNtu": null,
+        "sstAnomaly": null,
+        "upwellingAnomaly": null,
+        "acousticDensityPct": null,
+        "recentTagDetected": false
+      },
+      "surveillance": {
+        "droneActive": false,
+        "lifeguardActive": false,
+        "turbidityDataOk": false
+      },
+      "bomContext": {
+        "station": "Sydney - Observatory Hill",
+        "timestampUtc": "20260823130000",
+        "rainSince9amMm": "0.0",
+        "airTempC": 15.8,
+        "windKmh": 7,
+        "windDirection": "NNE"
+      },
+      "dataCompleteness": {
+        "coreFieldsAvailable": 0,
+        "coreFieldsExpected": 3,
+        "evaluationReady": false
+      },
+      "evaluation": {
+        "status": "INSUFFICIENT_ENV_DATA",
+        "envFlag": null,
+        "obsState": "BLACKOUT",
+        "rationale": [
+          "Insufficient normalized environmental inputs; no risk colour issued."
+        ]
+      }
+    },
+    "north-steyne": {
+      "env": {
+        "rainPct": null,
+        "rain72hMm": null,
+        "turbidityPct": null,
+        "turbidityNtu": null,
+        "sstAnomaly": null,
+        "upwellingAnomaly": null,
+        "acousticDensityPct": null,
+        "recentTagDetected": false
+      },
+      "surveillance": {
+        "droneActive": false,
+        "lifeguardActive": false,
+        "turbidityDataOk": false
+      },
+      "bomContext": {
+        "station": "Sydney - Observatory Hill",
+        "timestampUtc": "20260823130000",
+        "rainSince9amMm": "0.0",
+        "airTempC": 15.8,
+        "windKmh": 7,
+        "windDirection": "NNE"
+      },
+      "dataCompleteness": {
+        "coreFieldsAvailable": 0,
+        "coreFieldsExpected": 3,
+        "evaluationReady": false
+      },
+      "evaluation": {
+        "status": "INSUFFICIENT_ENV_DATA",
+        "envFlag": null,
+        "obsState": "BLACKOUT",
+        "rationale": [
+          "Insufficient normalized environmental inputs; no risk colour issued."
+        ]
+      }
+    },
+    "bondi": {
+      "env": {
+        "rainPct": null,
+        "rain72hMm": null,
+        "turbidityPct": null,
+        "turbidityNtu": null,
+        "sstAnomaly": null,
+        "upwellingAnomaly": null,
+        "acousticDensityPct": null,
+        "recentTagDetected": false
+      },
+      "surveillance": {
+        "droneActive": false,
+        "lifeguardActive": false,
+        "turbidityDataOk": false
+      },
+      "bomContext": {
+        "station": "Sydney - Observatory Hill",
+        "timestampUtc": "20260823130000",
+        "rainSince9amMm": "0.0",
+        "airTempC": 15.8,
+        "windKmh": 7,
+        "windDirection": "NNE"
+      },
+      "dataCompleteness": {
+        "coreFieldsAvailable": 0,
+        "coreFieldsExpected": 3,
+        "evaluationReady": false
+      },
+      "evaluation": {
+        "status": "INSUFFICIENT_ENV_DATA",
+        "envFlag": null,
+        "obsState": "BLACKOUT",
+        "rationale": [
+          "Insufficient normalized environmental inputs; no risk colour issued."
+        ]
+      }
+    },
+    "coogee": {
+      "env": {
+        "rainPct": null,
+        "rain72hMm": null,
+        "turbidityPct": null,
+        "turbidityNtu": null,
+        "sstAnomaly": null,
+        "upwellingAnomaly": null,
+        "acousticDensityPct": null,
+        "recentTagDetected": false
+      },
+      "surveillance": {
+        "droneActive": false,
+        "lifeguardActive": false,
+        "turbidityDataOk": false
+      },
+      "bomContext": {
+        "station": "Sydney Airport",
+        "timestampUtc": "20260823130000",
+        "rainSince9amMm": "0.0",
+        "airTempC": 15.5,
+        "windKmh": 11,
+        "windDirection": "WNW"
+      },
+      "dataCompleteness": {
+        "coreFieldsAvailable": 0,
+        "coreFieldsExpected": 3,
+        "evaluationReady": false
+      },
+      "evaluation": {
+        "status": "INSUFFICIENT_ENV_DATA",
+        "envFlag": null,
+        "obsState": "BLACKOUT",
+        "rationale": [
+          "Insufficient normalized environmental inputs; no risk colour issued."
+        ]
+      }
+    },
+    "cronulla": {
+      "env": {
+        "rainPct": null,
+        "rain72hMm": null,
+        "turbidityPct": null,
+        "turbidityNtu": null,
+        "sstAnomaly": null,
+        "upwellingAnomaly": null,
+        "acousticDensityPct": null,
+        "recentTagDetected": false
+      },
+      "surveillance": {
+        "droneActive": false,
+        "lifeguardActive": false,
+        "turbidityDataOk": false
+      },
+      "bomContext": {
+        "station": "Sydney Airport",
+        "timestampUtc": "20260823130000",
+        "rainSince9amMm": "0.0",
+        "airTempC": 15.5,
+        "windKmh": 11,
+        "windDirection": "WNW"
+      },
+      "dataCompleteness": {
+        "coreFieldsAvailable": 0,
+        "coreFieldsExpected": 3,
+        "evaluationReady": false
+      },
+      "evaluation": {
+        "status": "INSUFFICIENT_ENV_DATA",
+        "envFlag": null,
+        "obsState": "BLACKOUT",
+        "rationale": [
+          "Insufficient normalized environmental inputs; no risk colour issued."
+        ]
+      }
+    },
+    "balmoral": {
+      "env": {
+        "rainPct": null,
+        "rain72hMm": null,
+        "turbidityPct": null,
+        "turbidityNtu": null,
+        "sstAnomaly": null,
+        "upwellingAnomaly": null,
+        "acousticDensityPct": null,
+        "recentTagDetected": false
+      },
+      "surveillance": {
+        "droneActive": false,
+        "lifeguardActive": false,
+        "turbidityDataOk": false
+      },
+      "bomContext": {
+        "station": "Sydney - Observatory Hill",
+        "timestampUtc": "20260823130000",
+        "rainSince9amMm": "0.0",
+        "airTempC": 15.8,
+        "windKmh": 7,
+        "windDirection": "NNE"
+      },
+      "dataCompleteness": {
+        "coreFieldsAvailable": 0,
+        "coreFieldsExpected": 3,
+        "evaluationReady": false
+      },
+      "evaluation": {
+        "status": "INSUFFICIENT_ENV_DATA",
+        "envFlag": null,
+        "obsState": "BLACKOUT",
+        "rationale": [
+          "Insufficient normalized environmental inputs; no risk colour issued."
+        ]
+      }
+    }
+  },
+  "evaluatedAt": "2026-08-23T13:08:28.227Z"
 }
