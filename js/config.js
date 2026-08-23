@@ -2,7 +2,7 @@
   'use strict';
 
   const CONFIG = Object.freeze({
-    version: '0.2.0-pilot',
+    version: '0.3.0-pilot',
     thresholds: Object.freeze({
       rainfall: Object.freeze({ p75: 0.75, p90: 0.90 }),
       turbidity: Object.freeze({ p50: 0.50, p80: 0.80 }),
@@ -17,23 +17,20 @@
       sstAnomaly: 1,
       recentTag: 3
     }),
-    envFlags: Object.freeze({
-      greenMax: 1,
-      orangeMin: 2,
-      redMin: 3
+    envFlags: Object.freeze({ greenMax: 1, orangeMin: 2, redMin: 3 }),
+    observation: Object.freeze({ blackoutMax: 1, moderate: 2, high: 3 }),
+    hysteresis: Object.freeze({ holdHours: 24, applyTo: 'ENVIRONMENTAL_DEESCALATION_ONLY' }),
+    analytics: Object.freeze({
+      evaluationStart: '2025-02-23T00:00:00+11:00',
+      evaluationEnd: '2026-08-23T23:59:59+10:00',
+      demoStepHours: 6,
+      provenance: 'DETERMINISTIC_DEMONSTRATION_SERIES_NOT_MEASURED_HISTORY'
     }),
-    observation: Object.freeze({
-      blackoutMax: 1,
-      moderate: 2,
-      high: 3
-    }),
-    storageKeys: Object.freeze({
-      overrides: '4nico.lifeguardOverrides.v1'
-    }),
+    storageKeys: Object.freeze({ overrides: '4nico.lifeguardOverrides.v1' }),
     pilot: Object.freeze({
       defaultBeachId: 'north-steyne',
       replayStart: '2026-01-15T16:20:00+11:00',
-      replayEnd: '2026-01-20T16:20:00+11:00'
+      replayEnd: '2026-06-13T11:00:00+10:00'
     })
   });
 
