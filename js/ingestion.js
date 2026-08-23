@@ -7,51 +7,36 @@
     return response.json();
   }
 
-  async function loadPilotBeaches() {
-    return fetchJson('data/pilot_beaches.json');
-  }
-
-  async function loadIncidentHistory() {
-    return fetchJson('data/incident_history.json');
+  async function loadPilotBeaches() { return fetchJson('data/pilot_beaches.json'); }
+  async function loadIncidentHistory() { return fetchJson('data/incident_history.json'); }
+  async function loadEmpiricalSeries() { return fetchJson('data/empirical_18m_series.json'); }
+  async function loadLiveState() {
+    try { return await fetchJson('data/live_state.json'); }
+    catch (_) { return null; }
   }
 
   function defaultEnvironmentalState(beach) {
-    return {
-      rainPct: 0.25,
-      turbidityPct: 0.25,
-      sstAnomaly: 0,
-      recentTagDetected: false,
-      beachId: beach.id
-    };
+    return { rainPct: 0.25, turbidityPct: 0.25, sstAnomaly: 0, recentTagDetected: false, beachId: beach.id };
   }
 
   function defaultSurveillanceState() {
-    return {
-      droneActive: true,
-      lifeguardActive: true,
-      turbidityDataOk: true
-    };
+    return { droneActive: true, lifeguardActive: true, turbidityDataOk: true };
   }
 
   function mergeSnapshot(beach, snapshot) {
     const env = defaultEnvironmentalState(beach);
     const surveillance = defaultSurveillanceState();
     if (!snapshot) return { env, surveillance };
-
     Object.assign(env, snapshot.global || {});
     const local = (snapshot.beaches || {})[beach.id] || {};
     Object.assign(env, local);
     if (local.surveillance) Object.assign(surveillance, local.surveillance);
     delete env.surveillance;
-
     return { env, surveillance };
   }
 
   window.FourNICOIngestion = Object.freeze({
-    loadPilotBeaches,
-    loadIncidentHistory,
-    defaultEnvironmentalState,
-    defaultSurveillanceState,
-    mergeSnapshot
+    loadPilotBeaches, loadIncidentHistory, loadEmpiricalSeries, loadLiveState,
+    defaultEnvironmentalState, defaultSurveillanceState, mergeSnapshot
   });
 })();
