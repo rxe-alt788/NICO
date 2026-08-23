@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "0.2.0",
+  "window": {
+    "start": "2026-01-15T16:20:00+11:00",
+    "end": "2026-01-20T16:20:00+11:00",
+    "description": "Pilot replay window spanning 72 hours before the 18 January 2026 Vaucluse incident through 24 hours after the 19 January North Steyne incident."
+  },
+  "provenance": {
+    "incidentTimes": "Public incident timing is based on contemporaneous authoritative/public reporting and must be replaced or reconciled with DPI incident records before formal use.",
+    "environmentalSnapshots": "SYNTHETIC_PILOT_SCENARIO. Rainfall, turbidity percentile and SST anomaly values below are demonstration inputs, not claimed measured observations. They exist to exercise the rules engine until authoritative BOM/Beachwatch/IMOS time series are ingested.",
+    "surveillanceSnapshots": "SYNTHETIC_PILOT_SCENARIO except where an incident note records a publicly reported operational response."
+  },
+  "events": [
+    {"timestamp":"2026-01-18T16:20:00+11:00","beachId":"balmoral","type":"SERIOUS_INCIDENT_NEARBY","location":"Hermitage Foreshore Walk / Shark Beach, Vaucluse","note":"Large shark bite reported; critical leg injuries. Balmoral is used only as the harbour pilot card and is not the incident location."},
+    {"timestamp":"2026-01-19T11:45:00+11:00","beachId":"north-steyne","type":"ENCOUNTER_NEARBY","location":"Dee Why Beach","note":"Young surfer reportedly uninjured after shark bit surfboard."},
+    {"timestamp":"2026-01-19T18:20:00+11:00","beachId":"north-steyne","type":"SERIOUS_INCIDENT","location":"North Steyne Beach, Manly","note":"Surfer suffered serious leg injuries; northern beaches subsequently closed."}
+  ],
+  "snapshots": [
+    {"timestamp":"2026-01-15T16:20:00+11:00","label":"T-72h","global":{"rainPct":0.42,"sstAnomaly":0.8},"beaches":{}},
+    {"timestamp":"2026-01-16T16:20:00+11:00","label":"T-48h","global":{"rainPct":0.68,"sstAnomaly":0.9},"beaches":{"balmoral":{"turbidityPct":0.45},"north-steyne":{"turbidityPct":0.38}}},
+    {"timestamp":"2026-01-17T16:20:00+11:00","label":"T-24h","global":{"rainPct":0.82,"sstAnomaly":1.1},"beaches":{"balmoral":{"turbidityPct":0.64},"north-steyne":{"turbidityPct":0.52},"palm-beach":{"turbidityPct":0.48},"bondi":{"turbidityPct":0.44},"coogee":{"turbidityPct":0.46},"cronulla":{"turbidityPct":0.55}}},
+    {"timestamp":"2026-01-18T10:20:00+11:00","label":"T-6h","global":{"rainPct":0.93,"sstAnomaly":1.4},"beaches":{"balmoral":{"turbidityPct":0.86},"north-steyne":{"turbidityPct":0.70},"palm-beach":{"turbidityPct":0.66},"bondi":{"turbidityPct":0.61},"coogee":{"turbidityPct":0.63},"cronulla":{"turbidityPct":0.74}}},
+    {"timestamp":"2026-01-18T16:20:00+11:00","label":"Vaucluse incident","global":{"rainPct":0.95,"sstAnomaly":1.5},"beaches":{"balmoral":{"turbidityPct":0.91,"recentTagDetected":false,"surveillance":{"droneActive":false,"lifeguardActive":true,"turbidityDataOk":true}},"north-steyne":{"turbidityPct":0.78},"palm-beach":{"turbidityPct":0.72},"bondi":{"turbidityPct":0.68},"coogee":{"turbidityPct":0.69},"cronulla":{"turbidityPct":0.79}}},
+    {"timestamp":"2026-01-19T11:45:00+11:00","label":"Dee Why encounter","global":{"rainPct":0.94,"sstAnomaly":1.5},"beaches":{"north-steyne":{"turbidityPct":0.84,"recentTagDetected":false,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},"palm-beach":{"turbidityPct":0.77},"balmoral":{"turbidityPct":0.89},"bondi":{"turbidityPct":0.70},"coogee":{"turbidityPct":0.71},"cronulla":{"turbidityPct":0.80}}},
+    {"timestamp":"2026-01-19T18:20:00+11:00","label":"North Steyne incident","global":{"rainPct":0.91,"sstAnomaly":1.4},"beaches":{"north-steyne":{"turbidityPct":0.87,"recentTagDetected":false,"surveillance":{"droneActive":true,"lifeguardActive":true,"turbidityDataOk":true}},"palm-beach":{"turbidityPct":0.80},"balmoral":{"turbidityPct":0.86},"bondi":{"turbidityPct":0.72},"coogee":{"turbidityPct":0.73},"cronulla":{"turbidityPct":0.82}}},
+    {"timestamp":"2026-01-20T04:20:00+11:00","label":"Post +10h","global":{"rainPct":0.86,"sstAnomaly":1.3},"beaches":{"north-steyne":{"turbidityPct":0.81,"surveillance":{"droneActive":false,"lifeguardActive":false,"turbidityDataOk":true}},"palm-beach":{"turbidityPct":0.76},"balmoral":{"turbidityPct":0.82},"bondi":{"turbidityPct":0.68},"coogee":{"turbidityPct":0.69},"cronulla":{"turbidityPct":0.78}}},
+    {"timestamp":"2026-01-20T16:20:00+11:00","label":"Post +24h","global":{"rainPct":0.79,"sstAnomaly":1.2},"beaches":{"north-steyne":{"turbidityPct":0.72},"palm-beach":{"turbidityPct":0.68},"balmoral":{"turbidityPct":0.75},"bondi":{"turbidityPct":0.61},"coogee":{"turbidityPct":0.62},"cronulla":{"turbidityPct":0.70}}}
+  ]
+}
