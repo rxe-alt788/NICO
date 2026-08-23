@@ -34,10 +34,21 @@ BASE = "https://www.bom.gov.au"
 CDO = BASE + "/jsp/ncc/cdio/weatherData/av"
 SYDNEY = ZoneInfo("Australia/Sydney")
 
+BROWSER_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-AU,en;q=0.9",
+    "Connection": "keep-alive",
+}
+
 
 def request_bytes(url: str) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "4NICO-validation/0.7"})
+    req = urllib.request.Request(url, headers=BROWSER_HEADERS)
     with urllib.request.urlopen(req, timeout=120) as response:
+        final_url = response.geturl()
+        status = getattr(response, "status", 200)
+        if status >= 400:
+            raise RuntimeError(f"BOM request failed with HTTP {status}: {final_url}")
         return response.read()
 
 
@@ -53,7 +64,6 @@ def resolve_zip_url(station: str) -> str:
     text = request_bytes(landing).decode("utf-8", errors="replace")
     matches = re.findall(r'href=["\']([^"\']*p_display_type=dailyZippedDataFile[^"\']*)["\']', text, flags=re.I)
     if not matches:
-        # Older CDO markup sometimes exposes the target outside an href attribute.
         m = re.search(r'(/jsp/ncc/cdio/weatherData/av\?p_display_type=dailyZippedDataFile[^"\'<\s]+)', text, flags=re.I)
         matches = [m.group(1)] if m else []
     if not matches:
@@ -100,8 +110,6 @@ def main() -> int:
             continue
         if not (START <= obs_date <= END):
             continue
-        # BOM daily rainfall observations are nominally read at 09:00 local time
-        # and describe rainfall accumulated over the preceding observation period.
         timestamp = datetime.combine(obs_date, time(9, 0), tzinfo=SYDNEY).isoformat()
         selected.append({
             "timestamp": timestamp,
