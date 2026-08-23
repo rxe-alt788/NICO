@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "allowedProvenanceClasses": [
+    "ASID_AUTHORITATIVE",
+    "VERIFIED_INTERIM",
+    "UNVERIFIED_SUPPLEMENTARY"
+  ],
+  "records": [
+    {
+      "id": "coogee-2026-06-13",
+      "timestamp": "2026-06-13T11:15:00+10:00",
+      "datePrecision": "APPROXIMATE_TIME",
+      "state": "NSW",
+      "location": "Coogee Beach",
+      "beachId": "coogee",
+      "pilotMappingType": "EXACT_OR_NAMED_SITE",
+      "eventClass": "SERIOUS_BITE",
+      "provenanceClass": "VERIFIED_INTERIM",
+      "validationEligible": true,
+      "sourceAuthorities": [
+        "NSW Police Force",
+        "Randwick City Council"
+      ],
+      "sourceNote": "Post-dates the 24 February 2026 ASID public release. Retained as a verified interim incident until reconciled against a later DPI/ASID release. Approximate time must not be promoted to exact-event precision."
+    }
+  ]
+}
