@@ -1,0 +1,57 @@
+name: Validate historical 4NICO dataset
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/ingest_historical.py'
+      - 'scripts/run_validation.py'
+      - 'scripts/adapters/**'
+      - 'data/raw/**'
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Configure local source files when present
+        shell: bash
+        run: |
+          [ -f data/raw/bom_rainfall.csv ] && echo "BOM_ARCHIVE_CSV=data/raw/bom_rainfall.csv" >> "$GITHUB_ENV" || true
+          [ -f data/raw/waternsw_hydrometric.csv ] && echo "WATERNSW_ARCHIVE_CSV=data/raw/waternsw_hydrometric.csv" >> "$GITHUB_ENV" || true
+          [ -f data/raw/beachwatch.csv ] && echo "BEACHWATCH_ARCHIVE_CSV=data/raw/beachwatch.csv" >> "$GITHUB_ENV" || true
+          [ -f data/raw/imos_marine.csv ] && echo "IMOS_ARCHIVE_CSV=data/raw/imos_marine.csv" >> "$GITHUB_ENV" || true
+          [ -f data/raw/asid_incidents.csv ] && echo "ASID_ARCHIVE_FILE=data/raw/asid_incidents.csv" >> "$GITHUB_ENV" || true
+          [ -f data/raw/asid_incidents.json ] && echo "ASID_ARCHIVE_FILE=data/raw/asid_incidents.json" >> "$GITHUB_ENV" || true
+
+      - name: Run historical ingestion
+        env:
+          WATERNSW_SUBSCRIPTION_KEY: ${{ secrets.WATERNSW_SUBSCRIPTION_KEY }}
+          BOM_ARCHIVE_URL: ${{ secrets.BOM_ARCHIVE_URL }}
+          WATERNSW_ARCHIVE_URL: ${{ secrets.WATERNSW_ARCHIVE_URL }}
+          BEACHWATCH_ARCHIVE_URL: ${{ secrets.BEACHWATCH_ARCHIVE_URL }}
+          IMOS_ARCHIVE_URL: ${{ secrets.IMOS_ARCHIVE_URL }}
+          ASID_ARCHIVE_URL: ${{ secrets.ASID_ARCHIVE_URL }}
+        run: python scripts/ingest_historical.py
+
+      - name: Generate empirical validation report
+        run: python scripts/run_validation.py
+
+      - name: Commit empirical outputs if changed
+        run: |
+          if git diff --quiet -- data/empirical_18m_series.json data/validation_report.md; then
+            echo "No empirical output changes"
+            exit 0
+          fi
+          git config user.name "4NICO validation bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/empirical_18m_series.json data/validation_report.md
+          git commit -m "Refresh empirical 4NICO validation"
+          git push
