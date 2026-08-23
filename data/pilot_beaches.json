@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "0.2.0",
+  "generatedFor": "4NICO working pilot",
+  "warning": "Rainfall percentile trigger values are model configuration thresholds. Historical turbidity medians are intentionally null until authoritative beach-level historical turbidity data is sourced and validated. Do not present null values as measured baselines.",
+  "beaches": [
+    {
+      "id": "palm-beach",
+      "name": "Palm Beach",
+      "region": "Northern Beaches",
+      "lat": -33.6017,
+      "lon": 151.3239,
+      "catchmentProfile": "ocean beach with Pittwater/Hawkesbury influence",
+      "rainfallPercentileThresholds": {"p75": 0.75, "p90": 0.90},
+      "historicalTurbidityMedianNtu": null,
+      "turbidityBaselineStatus": "REQUIRES_AUTHORITATIVE_SOURCE"
+    },
+    {
+      "id": "north-steyne",
+      "name": "North Steyne",
+      "region": "Northern Beaches",
+      "lat": -33.7934,
+      "lon": 151.2898,
+      "catchmentProfile": "open ocean beach; local stormwater influence",
+      "rainfallPercentileThresholds": {"p75": 0.75, "p90": 0.90},
+      "historicalTurbidityMedianNtu": null,
+      "turbidityBaselineStatus": "REQUIRES_AUTHORITATIVE_SOURCE"
+    },
+    {
+      "id": "bondi",
+      "name": "Bondi",
+      "region": "Eastern Suburbs",
+      "lat": -33.8915,
+      "lon": 151.2767,
+      "catchmentProfile": "open ocean urban beach",
+      "rainfallPercentileThresholds": {"p75": 0.75, "p90": 0.90},
+      "historicalTurbidityMedianNtu": null,
+      "turbidityBaselineStatus": "REQUIRES_AUTHORITATIVE_SOURCE"
+    },
+    {
+      "id": "coogee",
+      "name": "Coogee",
+      "region": "Eastern Suburbs",
+      "lat": -33.9209,
+      "lon": 151.2589,
+      "catchmentProfile": "semi-embayed urban ocean beach",
+      "rainfallPercentileThresholds": {"p75": 0.75, "p90": 0.90},
+      "historicalTurbidityMedianNtu": null,
+      "turbidityBaselineStatus": "REQUIRES_AUTHORITATIVE_SOURCE"
+    },
+    {
+      "id": "cronulla",
+      "name": "Cronulla",
+      "region": "Sutherland Shire",
+      "lat": -34.0552,
+      "lon": 151.1545,
+      "catchmentProfile": "ocean beach with Port Hacking/Bate Bay influence",
+      "rainfallPercentileThresholds": {"p75": 0.75, "p90": 0.90},
+      "historicalTurbidityMedianNtu": null,
+      "turbidityBaselineStatus": "REQUIRES_AUTHORITATIVE_SOURCE"
+    },
+    {
+      "id": "balmoral",
+      "name": "Balmoral",
+      "region": "Sydney Harbour",
+      "lat": -33.8263,
+      "lon": 151.2501,
+      "catchmentProfile": "harbour beach; enclosed-water and catchment runoff influence",
+      "rainfallPercentileThresholds": {"p75": 0.75, "p90": 0.90},
+      "historicalTurbidityMedianNtu": null,
+      "turbidityBaselineStatus": "REQUIRES_AUTHORITATIVE_SOURCE"
+    }
+  ]
+}
