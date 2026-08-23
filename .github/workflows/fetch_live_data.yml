@@ -1,0 +1,54 @@
+name: Fetch live 4NICO telemetry
+
+on:
+  schedule:
+    # 05:00 AEST = 19:00 UTC on the previous day. During AEDT this runs at 06:00 local.
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: 4nico-live-telemetry
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Fetch normalized live inputs
+        env:
+          WATERNSW_SUBSCRIPTION_KEY: ${{ secrets.WATERNSW_SUBSCRIPTION_KEY }}
+          WATERNSW_LIVE_URL: ${{ secrets.WATERNSW_LIVE_URL }}
+          DPI_LIVE_URL: ${{ secrets.DPI_LIVE_URL }}
+          IMOS_LIVE_URL: ${{ secrets.IMOS_LIVE_URL }}
+        run: python scripts/fetch_live.py
+
+      - name: Evaluate with browser rules engine
+        run: node scripts/evaluate_live.mjs
+
+      - name: Commit telemetry if changed
+        run: |
+          if git diff --quiet -- data/live_state.json; then
+            echo "No telemetry changes"
+            exit 0
+          fi
+          git config user.name "4NICO telemetry bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/live_state.json
+          git commit -m "Update daily 4NICO telemetry"
+          git push
