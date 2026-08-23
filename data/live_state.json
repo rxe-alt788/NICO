@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.4.0",
-  "generatedAt": "2026-08-23T13:08:28.175337+00:00",
+  "generatedAt": "2026-08-23T13:22:57.015561+00:00",
   "qualityRule": "Missing normalized model inputs never imply low risk.",
   "sources": {
     "bom": {
@@ -253,5 +253,5 @@
       }
     }
   },
-  "evaluatedAt": "2026-08-23T13:08:28.227Z"
+  "evaluatedAt": "2026-08-23T13:22:57.066Z"
 }
