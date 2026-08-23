@@ -59,6 +59,7 @@ def main():
     beachwatch_path = os.getenv('BEACHWATCH_ARCHIVE_CSV') or first_existing(RAW/'beachwatch_history.csv', RAW/'beachwatch.csv')
     imos_path = os.getenv('IMOS_ARCHIVE_CSV') or first_existing(RAW/'imos_sst_history.csv', RAW/'imos_marine.csv')
     asid_path = os.getenv('ASID_ARCHIVE_FILE') or os.getenv('DPI_INCIDENTS_JSON') or first_existing(RAW/'asid_public.xlsx', RAW/'asid_incidents.xlsx', RAW/'asid_incidents.csv', RAW/'asid_incidents.json')
+    interim_path = os.getenv('INCIDENT_INTERIM_FILE') or str(ROOT/'data/incidents_interim.json')
 
     rain, status['bom'] = bom_archive.load(bom_path, os.getenv('BOM_ARCHIVE_URL'), beach_ids)
     water, status['waternsw'] = waternsw_api.load(water_path, os.getenv('WATERNSW_ARCHIVE_URL'), beach_ids)
@@ -69,11 +70,12 @@ def main():
     status.update(marine_status)
     incidents, status['incidents'] = asid_reconciliation.load(
         asid_path,
-        os.getenv('ASID_ARCHIVE_URL') or os.getenv('DPI_INCIDENTS_URL')
+        os.getenv('ASID_ARCHIVE_URL') or os.getenv('DPI_INCIDENTS_URL'),
+        interim_path
     )
 
     merged = merge_layers(beach_ids, rain, water, marine)
-    loaded = [k for k,v in status.items() if v.get('state') == 'LOADED']
+    loaded = [k for k,v in status.items() if v.get('state') in ('LOADED','INTERIM_ONLY')]
     synthetic_sources = [k for k,v in status.items() if v.get('synthetic')]
     coverage = {bid: len(merged[bid]) for bid in beach_ids}
     if synthetic_sources:
@@ -84,11 +86,12 @@ def main():
         mode = 'AWAITING_ARCHIVES'
 
     payload = {
-        'schemaVersion': '0.6.0',
+        'schemaVersion': '0.7.0',
         'generatedAt': datetime.now(timezone.utc).isoformat(),
         'evaluationWindow': {'start': START.isoformat(), 'end': END.isoformat()},
         'mode': mode,
         'qualityRule': 'Null/absent means unavailable. Missing environmental values never default to GREEN. Synthetic fixtures are excluded from empirical claims.',
+        'incidentValidationRule': 'ASID_AUTHORITATIVE and VERIFIED_INTERIM are validation-eligible. UNVERIFIED_SUPPLEMENTARY is excluded from metrics.',
         'sourceStatus': status,
         'syntheticEnvironmentalSources': synthetic_sources,
         'coverageHoursByBeach': coverage,
