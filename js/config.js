@@ -2,7 +2,7 @@
   'use strict';
 
   const CONFIG = Object.freeze({
-    version: '0.3.0-pilot',
+    version: '0.4.0-empirical-bridge',
     thresholds: Object.freeze({
       rainfall: Object.freeze({ p75: 0.75, p90: 0.90 }),
       turbidity: Object.freeze({ p50: 0.50, p80: 0.80 }),
@@ -16,6 +16,15 @@
       turbidityP80: 2,
       sstAnomaly: 1,
       recentTag: 3
+    }),
+    experimental: Object.freeze({
+      secondaryCues: Object.freeze({
+        enabledByDefault: false,
+        status: 'PROVISIONAL_NOT_VALIDATED',
+        upwellingAnomalyThreshold: 1.5,
+        acousticDensityPctThreshold: 0.90,
+        weights: Object.freeze({ upwellingAnomaly: 1, acousticDensity: 1 })
+      })
     }),
     envFlags: Object.freeze({ greenMax: 1, orangeMin: 2, redMin: 3 }),
     observation: Object.freeze({ blackoutMax: 1, moderate: 2, high: 3 }),
