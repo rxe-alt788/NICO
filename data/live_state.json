@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "0.4.0",
+  "generatedAt": null,
+  "qualityRule": "Missing normalized model inputs never imply low risk.",
+  "sources": {},
+  "beaches": {
+    "palm-beach": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
+    "north-steyne": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
+    "bondi": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
+    "coogee": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
+    "cronulla": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}},
+    "balmoral": {"dataCompleteness":{"evaluationReady":false},"evaluation":{"status":"INSUFFICIENT_ENV_DATA"}}
+  }
+}
