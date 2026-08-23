@@ -4,16 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0b0f14" />
-  <meta name="description" content="4NICO pilot: shark-related environmental conditions, observation confidence and signal-stability analytics." />
+  <meta name="description" content="4NICO pilot: shark-related environmental conditions, observation confidence and empirical signal-stability analytics." />
   <title>4NICO Shark Risk Advisory</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-  <header>
-    <h1>4NICO Shark Risk Advisory</h1>
-    <div class="tagline">Relative shark-related conditions + observation confidence. Not attack prediction.</div>
-  </header>
-
+  <header><h1>4NICO Shark Risk Advisory</h1><div class="tagline">Relative shark-related conditions + observation confidence. Not attack prediction.</div></header>
   <main>
     <nav class="view-tabs" aria-label="Application views">
       <button type="button" data-view="analytics" aria-selected="true">DPI Analytics</button>
@@ -23,9 +19,15 @@
     </nav>
 
     <section id="analytics-view" class="panel app-view">
-      <div class="section-head"><div><div class="status-kicker">DPI Executive Summary</div><h2>Alert Frequency & Volatility</h2></div><label class="hold-control">De-escalation hold <input id="hold-hours" type="range" min="0" max="72" step="6" value="24" /><strong id="hold-hours-value">24h</strong></label></div>
+      <div class="section-head"><div><div class="status-kicker">DPI Executive Summary</div><h2>Alert Frequency, False Alert Burden & Lead Time</h2></div></div>
+      <div class="toolbar">
+        <label><strong>Source</strong> <select id="analytics-source"><option value="empirical">Empirical archive</option><option value="synthetic">Synthetic demonstration</option></select></label>
+        <label class="hold-control">De-escalation hold <input id="hold-hours" type="range" min="0" max="72" step="6" value="24" /><strong id="hold-hours-value">24h</strong></label>
+        <label><input id="experimental-secondary" type="checkbox" /> Experimental clear-water cues</label>
+      </div>
       <div class="note" id="analytics-provenance"></div>
-      <div class="table-wrap"><table class="analytics-table"><thead><tr><th>Beach</th><th>Green</th><th>Orange</th><th>Red</th><th>Red + Black</th><th>Other blackout</th><th>Transitions</th></tr></thead><tbody id="analytics-body"></tbody></table></div>
+      <div id="experimental-note" class="note">Experimental secondary cues are OFF by default. When enabled they test provisional upwelling and seasonal acoustic-density signals against false-alert burden; they are not validated production rules.</div>
+      <div class="table-wrap"><table class="analytics-table"><thead><tr><th>Beach</th><th>Green</th><th>Orange</th><th>Red</th><th>Red + Black</th><th>Transitions</th><th>False-alert burden</th><th>True-negative rate</th><th>Empirical lead time</th></tr></thead><tbody id="analytics-body"></tbody></table></div>
       <div class="callout"><strong>Stability rule:</strong> worsening conditions escalate immediately. De-escalation must remain below the previous state continuously for the selected hold period. Observation blackout remains real-time and independent.</div>
     </section>
 
@@ -45,10 +47,7 @@
     </section>
 
     <section id="lifeguard-view" class="panel app-view hidden">
-      <h2>Lifeguard Command Dashboard</h2>
-      <p>Manual overrides persist in this browser. Overrides alter the displayed state while preserving calculated scores and logging the override rationale.</p>
-      <div id="override-list"></div>
-      <div class="note">Pilot control only. Production requires authenticated operators, expiry rules, signed logs and DPI/SLSNSW governance.</div>
+      <h2>Lifeguard Command Dashboard</h2><p>Manual overrides persist in this browser. Overrides alter the displayed state while preserving calculated scores and logging the override rationale.</p><div id="override-list"></div><div class="note">Pilot control only. Production requires authenticated operators, expiry rules, signed logs and DPI/SLSNSW governance.</div>
     </section>
 
     <section id="simulator-view" class="panel app-view hidden">
@@ -57,39 +56,29 @@
       <input id="timeline-slider" class="timeline" type="range" min="0" max="0" step="1" value="0" />
       <div class="timeline-meta"><span id="timeline-start"></span><strong id="timeline-label"></strong><span id="timeline-end"></span></div>
       <div class="timeline-meta"><span id="timeline-time"></span><span id="timeline-index"></span></div>
-      <div id="incident-replay-state" class="replay-state"></div>
-      <div id="replay-provenance" class="note"></div>
+      <div id="incident-replay-state" class="replay-state"></div><div id="replay-provenance" class="note"></div>
       <div class="table-wrap"><table class="matrix-table"><thead><tr><th>Incident</th><th>Lead time</th><th>T-24h</th><th>T-12h</th><th>T-0h</th></tr></thead><tbody id="incident-matrix"></tbody></table></div>
-      <div class="note">Incident facts and synthetic environmental profiles are deliberately separated. Lead-time values shown here demonstrate system behavior, not historical prediction claims.</div>
+      <div class="note">Incident facts and synthetic environmental profiles are deliberately separated. Lead-time values shown in scenario mode demonstrate system behavior, not historical prediction claims.</div>
     </section>
   </main>
-
   <footer>Working pilot. The tool communicates relative conditions, monitoring confidence and signal stability; it does not predict attacks or declare a beach safe.</footer>
 
-  <script src="js/config.js"></script>
-  <script src="js/rulesEngine.js"></script>
-  <script src="js/ingestion.js"></script>
-  <script src="js/ui.js"></script>
-  <script src="js/analytics.js"></script>
-  <script src="js/simulator.js"></script>
+  <script src="js/config.js"></script><script src="js/rulesEngine.js"></script><script src="js/ingestion.js"></script><script src="js/ui.js"></script><script src="js/analytics.js"></script><script src="js/simulator.js"></script>
   <script>
     document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => {
-      const target = button.dataset.view;
-      document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-selected', String(b === button)));
-      document.querySelectorAll('.app-view').forEach(view => view.classList.add('hidden'));
-      document.getElementById(`${target}-view`).classList.remove('hidden');
+      const target=button.dataset.view; document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-selected',String(b===button))); document.querySelectorAll('.app-view').forEach(view=>view.classList.add('hidden')); document.getElementById(`${target}-view`).classList.remove('hidden');
     }));
 
-    Promise.all([window.FourNICOIngestion.loadPilotBeaches(), window.FourNICOIngestion.loadIncidentHistory()]).then(([beachData, history]) => {
-      window.FourNICOUI.init(beachData.beaches);
-      window.FourNICOAnalytics.renderAnalytics(beachData.beaches);
-      window.FourNICOSimulator.init(history);
-      const hold = document.getElementById('hold-hours');
-      hold.addEventListener('input', () => { document.getElementById('hold-hours-value').textContent = `${hold.value}h`; window.FourNICOAnalytics.renderAnalytics(beachData.beaches); });
-    }).catch(error => {
-      console.error(error);
-      document.body.insertAdjacentHTML('beforeend', `<div class="note" style="margin:1rem">Pilot data failed to load: ${error.message}</div>`);
-    });
+    Promise.all([
+      window.FourNICOIngestion.loadPilotBeaches(),
+      window.FourNICOIngestion.loadIncidentHistory(),
+      window.FourNICOIngestion.loadEmpiricalSeries()
+    ]).then(([beachData, history, empirical]) => {
+      window.FourNICOUI.init(beachData.beaches); window.FourNICOSimulator.init(history);
+      const source=document.getElementById('analytics-source'); const hold=document.getElementById('hold-hours'); const experimental=document.getElementById('experimental-secondary');
+      const render=()=>window.FourNICOAnalytics.renderAnalytics(beachData.beaches,empirical,source.value,experimental.checked);
+      hold.addEventListener('input',()=>{document.getElementById('hold-hours-value').textContent=`${hold.value}h`;render();}); source.addEventListener('change',render); experimental.addEventListener('change',render); render();
+    }).catch(error => { console.error(error); document.body.insertAdjacentHTML('beforeend',`<div class="note" style="margin:1rem">Pilot data failed to load: ${error.message}</div>`); });
   </script>
 </body>
 </html>
