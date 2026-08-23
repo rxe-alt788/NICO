@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - 'scripts/bootstrap_raw_data.py'
+      - 'scripts/fetch_bom_cdo.py'
       - 'scripts/ingest_historical.py'
       - 'scripts/run_validation.py'
       - 'scripts/adapters/**'
@@ -38,8 +39,13 @@ jobs:
       - name: Install validation dependencies
         run: python -m pip install -r requirements-validation.txt
 
-      - name: Bootstrap public ASID and engineering fixtures
+      - name: Bootstrap ASID and remaining engineering fixtures
         run: python scripts/bootstrap_raw_data.py
+
+      - name: Step 1 displacement - fetch observed BOM rainfall
+        env:
+          BOM_CDO_STATION: '066214'
+        run: python scripts/fetch_bom_cdo.py
 
       - name: Configure ephemeral raw sources
         shell: bash
@@ -53,7 +59,6 @@ jobs:
       - name: Run historical ingestion
         env:
           WATERNSW_SUBSCRIPTION_KEY: ${{ secrets.WATERNSW_SUBSCRIPTION_KEY }}
-          BOM_ARCHIVE_URL: ${{ secrets.BOM_ARCHIVE_URL }}
           WATERNSW_ARCHIVE_URL: ${{ secrets.WATERNSW_ARCHIVE_URL }}
           BEACHWATCH_ARCHIVE_URL: ${{ secrets.BEACHWATCH_ARCHIVE_URL }}
           IMOS_ARCHIVE_URL: ${{ secrets.IMOS_ARCHIVE_URL }}
