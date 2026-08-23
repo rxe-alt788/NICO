@@ -1,8 +1,15 @@
 from __future__ import annotations
+import json
 import urllib.request
 from pathlib import Path
 from typing import Any, Dict, List
 from .common import csv_rows, first, json_load, read_source, safe_float
+
+ALLOWED_PROVENANCE = {
+    'ASID_AUTHORITATIVE',
+    'VERIFIED_INTERIM',
+    'UNVERIFIED_SUPPLEMENTARY',
+}
 
 
 def _pilot_mapping(location: Any, state: Any) -> tuple[str | None, str | None]:
@@ -54,8 +61,6 @@ def _normalise(row: Dict[str, Any]) -> Dict[str, Any]:
     mapped_beach, mapping_type = _pilot_mapping(location, state)
     injury = first(row, 'victim.injury', 'victim_injury', 'injury outcome', 'fatality')
     species = first(row, 'shark.common.name', 'species', 'shark_species', 'shark species')
-    species_method = first(row, 'shark.identification.method', 'species identification method')
-    species_source = first(row, 'shark.identification.source', 'species identification source')
 
     return {
         'id': str(first(row, 'id', 'incident_id', 'record_id', 'case number') or ''),
@@ -72,8 +77,8 @@ def _normalise(row: Dict[str, Any]) -> Dict[str, Any]:
         'fatal': str(injury or first(row, 'fatal', 'fatality') or '').strip().lower() in ('fatal','1','true','yes','y'),
         'species': species,
         'speciesScientific': first(row, 'shark.scientific.name', 'scientific name'),
-        'speciesIdentificationMethod': species_method,
-        'speciesIdentificationSource': species_source,
+        'speciesIdentificationMethod': first(row, 'shark.identification.method', 'species identification method'),
+        'speciesIdentificationSource': first(row, 'shark.identification.source', 'species identification source'),
         'speciesConfidence': first(row, 'species_confidence', 'species certainty', 'species confidence'),
         'sharkLengthM': safe_float(first(row, 'shark.length.m', 'shark length', 'length_m')),
         'latitude': safe_float(first(row, 'latitude', 'lat')),
@@ -83,6 +88,8 @@ def _normalise(row: Dict[str, Any]) -> Dict[str, Any]:
         'provokedStatus': first(row, 'provoked.unprovoked', 'provoked/unprovoked'),
         'presentAtBite': first(row, 'present.at.time.of.bite', 'present at time of bite'),
         'sourceRecord': first(row, 'source', 'source_record', 'reference'),
+        'provenanceClass': 'ASID_AUTHORITATIVE',
+        'validationEligible': True,
         'provenance': 'Taronga Australian Shark-Incident Database public release; pilot beach mapping is a 4NICO analytical mapping and is separately labelled'
     }
 
@@ -105,12 +112,31 @@ def _xlsx_rows(path: Path) -> List[Dict[str, Any]]:
 
 
 def _download_binary(url: str, dest: Path) -> None:
-    req = urllib.request.Request(url, headers={'User-Agent': '4NICO-pilot/0.6'})
+    req = urllib.request.Request(url, headers={'User-Agent': '4NICO-pilot/0.7'})
     with urllib.request.urlopen(req, timeout=120) as response:
         dest.write_bytes(response.read())
 
 
-def load(path: str | None, url: str | None) -> tuple[List[Dict[str, Any]], Dict[str, Any]]:
+def _load_interim(path: str | None) -> List[Dict[str, Any]]:
+    if not path:
+        return []
+    p = Path(path)
+    if not p.exists():
+        return []
+    raw = json.loads(p.read_text(encoding='utf-8'))
+    records = raw.get('records', []) if isinstance(raw, dict) else []
+    out = []
+    for record in records:
+        provenance = record.get('provenanceClass')
+        if provenance not in ALLOWED_PROVENANCE:
+            raise ValueError(f'Invalid provenanceClass: {provenance}')
+        record = dict(record)
+        record['validationEligible'] = provenance in ('ASID_AUTHORITATIVE', 'VERIFIED_INTERIM') and bool(record.get('validationEligible', True))
+        out.append(record)
+    return out
+
+
+def load(path: str | None, url: str | None, interim_path: str | None = None) -> tuple[List[Dict[str, Any]], Dict[str, Any]]:
     source = 'not_configured'; rows: List[Dict[str, Any]] = []
     if path:
         p = Path(path); source = f'file:{p}'
@@ -131,16 +157,27 @@ def load(path: str | None, url: str | None) -> tuple[List[Dict[str, Any]], Dict[
             if text:
                 stripped = text.lstrip(); raw = json_load(text) if stripped.startswith(('{','[')) else csv_rows(text)
                 rows = raw.get('incidents', []) if isinstance(raw, dict) else raw
-    else:
-        return [], {'state': 'MISSING', 'source': source, 'note': 'Supply Taronga ASID / DPI export. Public reporting is not silently substituted.'}
 
     incidents = [_normalise(r) for r in rows if isinstance(r, dict)]
     incidents = [i for i in incidents if i['timestamp'] or i['location']]
-    nsw_2026 = sum(1 for i in incidents if i.get('state') == 'NSW' and i.get('incidentYear') == 2026)
-    exact_time = sum(1 for i in incidents if i.get('incidentYear') == 2026 and i.get('datePrecision') in ('TIMESTAMP','DATE_TIME'))
+    interim = _load_interim(interim_path)
+
+    # Authoritative records win on exact ID collision. Interim/supplementary rows fill
+    # post-release gaps without being relabelled as ASID data.
+    authoritative_ids = {i.get('id') for i in incidents if i.get('id')}
+    incidents.extend(i for i in interim if not i.get('id') or i.get('id') not in authoritative_ids)
+
+    nsw_2026 = sum(1 for i in incidents if str(i.get('state') or '').upper() == 'NSW' and (i.get('incidentYear') == 2026 or str(i.get('timestamp') or '').startswith('2026-')))
+    eligible = sum(1 for i in incidents if i.get('validationEligible'))
+    counts = {p: sum(1 for i in incidents if i.get('provenanceClass') == p) for p in sorted(ALLOWED_PROVENANCE)}
+    state = 'LOADED' if rows else ('INTERIM_ONLY' if interim else 'MISSING')
     return incidents, {
-        'state': 'LOADED', 'source': source, 'count': len(incidents), 'nsw2026Count': nsw_2026,
-        'exactTime2026Count': exact_time,
-        'sourceClass': 'AUTHORITATIVE_PUBLIC_RELEASE',
-        'note': 'ASID public fields ingested as published. Month/year-only records are not promoted to exact timestamps; post-release 2026 incidents require a newer DPI/ASID source.'
+        'state': state,
+        'source': source,
+        'count': len(incidents),
+        'validationEligibleCount': eligible,
+        'provenanceCounts': counts,
+        'nsw2026Count': nsw_2026,
+        'sourceClass': 'MIXED_INCIDENT_LEDGER' if interim else 'ASID_AUTHORITATIVE',
+        'note': 'Validation metrics accept ASID_AUTHORITATIVE and VERIFIED_INTERIM only. UNVERIFIED_SUPPLEMENTARY records remain visible but excluded.'
     }
