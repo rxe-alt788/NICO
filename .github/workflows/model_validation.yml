@@ -3,6 +3,7 @@ name: 4NICO model validation
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
       - 'scripts/bootstrap_raw_data.py'
       - 'scripts/fetch_bom_cdo.py'
@@ -39,10 +40,10 @@ jobs:
       - name: Install validation dependencies
         run: python -m pip install -r requirements-validation.txt
 
-      - name: Bootstrap ASID and remaining engineering fixtures
+      - name: Bootstrap public ASID and engineering fixtures
         run: python scripts/bootstrap_raw_data.py
 
-      - name: Step 1 displacement - fetch observed BOM rainfall
+      - name: Displace synthetic rainfall with observed BOM CDO archive
         env:
           BOM_CDO_STATION: '066214'
         run: python scripts/fetch_bom_cdo.py
