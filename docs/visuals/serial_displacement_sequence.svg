@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="760" viewBox="0 0 1800 760">
+  <rect width="1800" height="760" fill="#fff"/>
+  <style>
+    .title{font:700 40px Arial,sans-serif;fill:#111}.sub{font:20px Arial,sans-serif;fill:#444}.ph{font:700 22px Arial,sans-serif;fill:#111}.t{font:17px Arial,sans-serif;fill:#222}.s{font:15px Arial,sans-serif;fill:#555}.locked{fill:#eef8ef;stroke:#6f9d75;stroke-width:2}.pending{fill:#fafafa;stroke:#aaa;stroke-width:2}.engine{fill:#111;stroke:#111;stroke-width:2}.arrow{stroke:#555;stroke-width:3;fill:none;marker-end:url(#m)}
+  </style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#555"/></marker></defs>
+
+  <text x="70" y="65" class="title">4NICO serial displacement validation</text>
+  <text x="70" y="102" class="sub">Replace one synthetic source at a time. Re-run the full 18-month series. Do not retrain the rules.</text>
+
+  <rect x="70" y="145" width="1660" height="80" rx="14" class="engine"/>
+  <text x="100" y="180" style="font:700 23px Arial,sans-serif;fill:#fff">FROZEN RULES ENGINE</text>
+  <text x="355" y="180" style="font:19px Arial,sans-serif;fill:#ddd">Same thresholds, weights, missing-data handling and 24h de-escalation hold across every phase.</text>
+  <text x="100" y="207" style="font:16px Arial,sans-serif;fill:#bbb">Any rule change creates a new validation phase. Data displacement is not model tuning.</text>
+
+  <line x1="155" y1="305" x2="1645" y2="305" stroke="#bbb" stroke-width="4"/>
+
+  <g>
+    <circle cx="155" cy="305" r="15" fill="#6f9d75"/><rect x="70" y="345" width="250" height="270" rx="14" class="locked"/>
+    <text x="95" y="382" class="ph">Phase 0 · LOCKED</text><text x="95" y="417" class="t">Synthetic fixture</text><text x="95" y="448" class="s">Rainfall: synthetic</text><text x="95" y="474" class="s">Hydrology: synthetic</text><text x="95" y="500" class="s">Marine: synthetic</text><text x="95" y="540" class="ph">68.9% occupancy</text><text x="95" y="570" class="ph">12.83 transitions/mo</text><text x="95" y="600" class="s">Engineering baseline only</text>
+
+    <circle cx="445" cy="305" r="15" fill="#111"/><rect x="345" y="345" width="250" height="270" rx="14" class="pending"/>
+    <text x="370" y="382" class="ph">Phase 1</text><text x="370" y="417" class="t">Displace rainfall</text><text x="370" y="448" class="s">Source: BOM 066214</text><text x="370" y="474" class="s">Observed daily rainfall</text><text x="370" y="514" class="t">Measure:</text><text x="370" y="542" class="s">Δ Alert Occupancy</text><text x="370" y="568" class="s">Δ transitions/month</text><text x="370" y="600" class="ph">PENDING</text>
+
+    <circle cx="735" cy="305" r="15" fill="#aaa"/><rect x="620" y="345" width="250" height="270" rx="14" class="pending"/>
+    <text x="645" y="382" class="ph">Phase 2</text><text x="645" y="417" class="t">Displace hydrology</text><text x="645" y="448" class="s">Source: WaterNSW</text><text x="645" y="474" class="s">Turbidity + discharge</text><text x="645" y="514" class="t">Measure:</text><text x="645" y="542" class="s">Δ Alert Occupancy</text><text x="645" y="568" class="s">Δ transitions/month</text><text x="645" y="600" class="ph">QUEUED</text>
+
+    <circle cx="1025" cy="305" r="15" fill="#aaa"/><rect x="895" y="345" width="250" height="270" rx="14" class="pending"/>
+    <text x="920" y="382" class="ph">Phase 3</text><text x="920" y="417" class="t">Displace marine data</text><text x="920" y="448" class="s">Source: IMOS</text><text x="920" y="474" class="s">SST + upwelling</text><text x="920" y="514" class="t">Measure:</text><text x="920" y="542" class="s">Δ Alert Occupancy</text><text x="920" y="568" class="s">Δ transitions/month</text><text x="920" y="600" class="ph">QUEUED</text>
+
+    <circle cx="1315" cy="305" r="15" fill="#aaa"/><rect x="1170" y="345" width="250" height="270" rx="14" class="pending"/>
+    <text x="1195" y="382" class="ph">Phase 4</text><text x="1195" y="417" class="t">Full observed series</text><text x="1195" y="448" class="s">Beachwatch + reconciled</text><text x="1195" y="474" class="s">environmental coverage</text><text x="1195" y="514" class="t">Measure:</text><text x="1195" y="542" class="s">Operational burden</text><text x="1195" y="568" class="s">Stable-state behaviour</text><text x="1195" y="600" class="ph">QUEUED</text>
+
+    <circle cx="1605" cy="305" r="15" fill="#aaa"/><rect x="1445" y="345" width="285" height="270" rx="14" class="pending"/>
+    <text x="1470" y="382" class="ph">Phase 5</text><text x="1470" y="417" class="t">Empirical ablation</text><text x="1470" y="448" class="s">Secondary cues tested only</text><text x="1470" y="474" class="s">after real baselines exist</text><text x="1470" y="514" class="t">Then consider:</text><text x="1470" y="542" class="s">incident lead time</text><text x="1470" y="568" class="s">discrimination / hit rate</text><text x="1470" y="600" class="ph">QUEUED</text>
+  </g>
+
+  <text x="70" y="688" style="font:700 21px Arial,sans-serif;fill:#111">Decision order:</text><text x="225" y="688" class="t">operational occupancy → state stability → only then incident performance.</text>
+  <text x="70" y="720" style="font:700 19px Arial,sans-serif;fill:#111">The validation machine is complete. The validated shark-risk model is not yet.</text>
+</svg>
