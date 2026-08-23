@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0b0f14" />
-  <meta name="description" content="4NICO pilot: beach-level shark-related environmental conditions and observation confidence." />
+  <meta name="description" content="4NICO pilot: shark-related environmental conditions, observation confidence and signal-stability analytics." />
   <title>4NICO Shark Risk Advisory</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -16,94 +16,76 @@
 
   <main>
     <nav class="view-tabs" aria-label="Application views">
-      <button type="button" data-view="swimmer" aria-selected="true">Swimmer Advisory</button>
+      <button type="button" data-view="analytics" aria-selected="true">DPI Analytics</button>
+      <button type="button" data-view="swimmer" aria-selected="false">Swimmer Advisory</button>
       <button type="button" data-view="lifeguard" aria-selected="false">Lifeguard Dashboard</button>
-      <button type="button" data-view="simulator" aria-selected="false">Counterfactual Simulator</button>
+      <button type="button" data-view="simulator" aria-selected="false">Incident Simulator</button>
     </nav>
 
-    <section id="swimmer-view" class="app-view">
-      <div class="toolbar">
-        <label for="beach-picker"><strong>Beach</strong></label>
-        <select id="beach-picker" aria-label="Pilot beach"></select>
-      </div>
+    <section id="analytics-view" class="panel app-view">
+      <div class="section-head"><div><div class="status-kicker">DPI Executive Summary</div><h2>Alert Frequency & Volatility</h2></div><label class="hold-control">De-escalation hold <input id="hold-hours" type="range" min="0" max="72" step="6" value="24" /><strong id="hold-hours-value">24h</strong></label></div>
+      <div class="note" id="analytics-provenance"></div>
+      <div class="table-wrap"><table class="analytics-table"><thead><tr><th>Beach</th><th>Green</th><th>Orange</th><th>Red</th><th>Red + Black</th><th>Other blackout</th><th>Transitions</th></tr></thead><tbody id="analytics-body"></tbody></table></div>
+      <div class="callout"><strong>Stability rule:</strong> worsening conditions escalate immediately. De-escalation must remain below the previous state continuously for the selected hold period. Observation blackout remains real-time and independent.</div>
+    </section>
 
+    <section id="swimmer-view" class="app-view hidden">
+      <div class="toolbar"><label for="beach-picker"><strong>Beach</strong></label><select id="beach-picker" aria-label="Pilot beach"></select></div>
       <div class="layout">
         <article id="status-card" class="panel status-card" data-env="GREEN">
           <div class="status-kicker">Pilot beach advisory</div>
-          <div class="status-row">
-            <div>
-              <h2 id="beach-name" style="margin-bottom:.5rem">North Steyne</h2>
-              <p id="status-flag" class="status-flag">GREEN</p>
-              <span id="obs-badge" class="obs-badge" data-obs="HIGH">HIGH</span>
-            </div>
-            <div id="status-label" class="status-label">Normal baseline conditions. High observation capability.</div>
-          </div>
-
-          <div class="metrics">
-            <div class="metric"><span>Environmental score</span><strong id="env-score">0</strong></div>
-            <div class="metric"><span>Observation score</span><strong id="conf-score">3/3</strong></div>
-            <div class="metric"><span>Environmental state</span><strong>GREEN / ORANGE / RED</strong></div>
-            <div class="metric"><span>Updated</span><strong id="updated-time">Now</strong></div>
-          </div>
-
+          <div class="status-row"><div><h2 id="beach-name" style="margin-bottom:.5rem">North Steyne</h2><p id="status-flag" class="status-flag">GREEN</p><span id="obs-badge" class="obs-badge" data-obs="HIGH">HIGH</span></div><div id="status-label" class="status-label">Normal baseline conditions. High observation capability.</div></div>
+          <div id="trigger-delta" class="trigger-delta hidden"></div>
+          <div class="metrics"><div class="metric"><span>Environmental score</span><strong id="env-score">0</strong></div><div class="metric"><span>Observation score</span><strong id="conf-score">3/3</strong></div><div class="metric"><span>Environmental state</span><strong>GREEN / ORANGE / RED</strong></div><div class="metric"><span>Updated</span><strong id="updated-time">Now</strong></div></div>
           <ul id="rationale" class="rationale"></ul>
-
-          <div class="note">
-            GREEN means conditions are within the configured baseline, not that sharks are absent or the beach is safe. A black UNMONITORED badge is independent of environmental colour and indicates a material surveillance blind spot.
-          </div>
+          <div class="note">GREEN means configured conditions are within baseline, not that sharks are absent or the beach is safe. SURVEILLANCE BLACKOUT is independent of environmental colour.</div>
         </article>
-
-        <aside class="panel">
-          <h3>Six-site pilot</h3>
-          <p class="override-note">Every beach carries an environmental state and a separate observation state. RED [UNMONITORED] is therefore possible and intentional.</p>
-          <div id="beach-grid" class="beach-grid"></div>
-        </aside>
+        <aside class="panel"><h3>Six-site pilot</h3><p class="override-note">Environmental risk and observation capability remain separate. RED + SURVEILLANCE BLACKOUT is intentionally visible.</p><div id="beach-grid" class="beach-grid"></div></aside>
       </div>
     </section>
 
     <section id="lifeguard-view" class="panel app-view hidden">
       <h2>Lifeguard Command Dashboard</h2>
-      <p>Manual overrides persist in this browser during field testing. Overrides change the displayed state but preserve the underlying calculated scores and are identified in the rationale.</p>
+      <p>Manual overrides persist in this browser. Overrides alter the displayed state while preserving calculated scores and logging the override rationale.</p>
       <div id="override-list"></div>
-      <div class="note">Pilot control only. Production deployment should add authenticated operators, signed event logs, expiry times, override reason codes and DPI/SLSNSW governance.</div>
+      <div class="note">Pilot control only. Production requires authenticated operators, expiry rules, signed logs and DPI/SLSNSW governance.</div>
     </section>
 
     <section id="simulator-view" class="panel app-view hidden">
-      <h2>January 2026 Counterfactual Simulator</h2>
-      <p>Scrub the timeline to replay each historical/scenario snapshot through the same deterministic rules engine used by the live cards.</p>
+      <div class="status-kicker">Counterfactual replay</div><h2>2026 Incident Comparative Matrix</h2>
+      <div class="toolbar"><label for="incident-selector"><strong>Incident</strong></label><select id="incident-selector"></select></div>
       <input id="timeline-slider" class="timeline" type="range" min="0" max="0" step="1" value="0" />
       <div class="timeline-meta"><span id="timeline-start"></span><strong id="timeline-label"></strong><span id="timeline-end"></span></div>
       <div class="timeline-meta"><span id="timeline-time"></span><span id="timeline-index"></span></div>
+      <div id="incident-replay-state" class="replay-state"></div>
       <div id="replay-provenance" class="note"></div>
-      <div class="note">Public incident timing and synthetic environmental replay inputs are deliberately separated. The simulator becomes evidentiary only after authoritative environmental time series are ingested and provenance is locked.</div>
+      <div class="table-wrap"><table class="matrix-table"><thead><tr><th>Incident</th><th>Lead time</th><th>T-24h</th><th>T-12h</th><th>T-0h</th></tr></thead><tbody id="incident-matrix"></tbody></table></div>
+      <div class="note">Incident facts and synthetic environmental profiles are deliberately separated. Lead-time values shown here demonstrate system behavior, not historical prediction claims.</div>
     </section>
   </main>
 
-  <footer>
-    Working pilot. The tool communicates relative conditions and monitoring confidence; it does not predict attacks or declare a beach safe.
-  </footer>
+  <footer>Working pilot. The tool communicates relative conditions, monitoring confidence and signal stability; it does not predict attacks or declare a beach safe.</footer>
 
   <script src="js/config.js"></script>
   <script src="js/rulesEngine.js"></script>
   <script src="js/ingestion.js"></script>
   <script src="js/ui.js"></script>
+  <script src="js/analytics.js"></script>
   <script src="js/simulator.js"></script>
   <script>
-    document.querySelectorAll('[data-view]').forEach(button => {
-      button.addEventListener('click', () => {
-        const target = button.dataset.view;
-        document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-selected', String(b === button)));
-        document.querySelectorAll('.app-view').forEach(view => view.classList.add('hidden'));
-        document.getElementById(`${target}-view`).classList.remove('hidden');
-      });
-    });
+    document.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => {
+      const target = button.dataset.view;
+      document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-selected', String(b === button)));
+      document.querySelectorAll('.app-view').forEach(view => view.classList.add('hidden'));
+      document.getElementById(`${target}-view`).classList.remove('hidden');
+    }));
 
-    Promise.all([
-      window.FourNICOIngestion.loadPilotBeaches(),
-      window.FourNICOIngestion.loadIncidentHistory()
-    ]).then(([beachData, history]) => {
+    Promise.all([window.FourNICOIngestion.loadPilotBeaches(), window.FourNICOIngestion.loadIncidentHistory()]).then(([beachData, history]) => {
       window.FourNICOUI.init(beachData.beaches);
+      window.FourNICOAnalytics.renderAnalytics(beachData.beaches);
       window.FourNICOSimulator.init(history);
+      const hold = document.getElementById('hold-hours');
+      hold.addEventListener('input', () => { document.getElementById('hold-hours-value').textContent = `${hold.value}h`; window.FourNICOAnalytics.renderAnalytics(beachData.beaches); });
     }).catch(error => {
       console.error(error);
       document.body.insertAdjacentHTML('beforeend', `<div class="note" style="margin:1rem">Pilot data failed to load: ${error.message}</div>`);
