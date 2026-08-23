@@ -5,6 +5,13 @@ on:
     # 05:00 AEST = 19:00 UTC on the previous day. During AEDT this runs at 06:00 local.
     - cron: '0 19 * * *'
   workflow_dispatch:
+  push:
+    paths:
+      - 'scripts/fetch_live.py'
+      - 'scripts/evaluate_live.mjs'
+      - 'js/config.js'
+      - 'js/rulesEngine.js'
+      - '.github/workflows/fetch_live_data.yml'
 
 permissions:
   contents: write
