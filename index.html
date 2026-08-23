@@ -4,237 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0b0f14" />
+  <meta name="description" content="4NICO pilot: beach-level shark-related environmental conditions and observation confidence." />
   <title>4NICO Shark Risk Advisory</title>
-  <style>
-    :root {
-      --bg: #f4f6f8;
-      --panel: #ffffff;
-      --text: #18212b;
-      --muted: #66717f;
-      --border: #d9dee5;
-      --green: #15803d;
-      --orange: #d97706;
-      --red: #b91c1c;
-      --black: #111827;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    header {
-      background: #0b0f14;
-      color: #fff;
-      padding: 1rem 1.25rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.15rem;
-      letter-spacing: 0.02em;
-    }
-
-    header .tagline {
-      font-size: 0.8rem;
-      opacity: 0.72;
-      text-align: right;
-    }
-
-    main {
-      width: min(1180px, calc(100% - 2rem));
-      margin: 1rem auto 2rem;
-    }
-
-    .view-tabs {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .view-tabs button {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      border-radius: 999px;
-      padding: 0.65rem 0.95rem;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .view-tabs button[aria-selected="true"] {
-      background: #0b0f14;
-      color: white;
-      border-color: #0b0f14;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
-      gap: 1rem;
-    }
-
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 1rem;
-      box-shadow: 0 8px 30px rgba(15, 23, 42, 0.05);
-    }
-
-    .panel h2,
-    .panel h3 {
-      margin-top: 0;
-    }
-
-    .status-card {
-      border-left: 12px solid var(--green);
-      transition: border-color 160ms ease;
-    }
-
-    .status-card[data-flag="ORANGE"] { border-left-color: var(--orange); }
-    .status-card[data-flag="RED"] { border-left-color: var(--red); }
-    .status-card[data-flag="BLACK"] { border-left-color: var(--black); }
-
-    .status-kicker {
-      font-size: 0.78rem;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.09em;
-      font-weight: 700;
-    }
-
-    .status-row {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-top: 0.5rem;
-    }
-
-    .status-flag {
-      margin: 0;
-      font-size: clamp(2.25rem, 7vw, 4.75rem);
-      line-height: 0.95;
-    }
-
-    .status-label {
-      font-size: 1rem;
-      color: var(--muted);
-      text-align: right;
-      max-width: 260px;
-    }
-
-    .metrics {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.75rem;
-      margin-top: 1rem;
-    }
-
-    .metric {
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 0.8rem;
-    }
-
-    .metric span {
-      display: block;
-      font-size: 0.78rem;
-      color: var(--muted);
-      margin-bottom: 0.2rem;
-    }
-
-    .metric strong {
-      font-size: 1.1rem;
-    }
-
-    .control-grid {
-      display: grid;
-      gap: 1rem;
-    }
-
-    .control {
-      display: grid;
-      gap: 0.35rem;
-    }
-
-    .control label {
-      display: flex;
-      justify-content: space-between;
-      gap: 1rem;
-      font-weight: 650;
-    }
-
-    .control small {
-      color: var(--muted);
-    }
-
-    .toggle-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .toggle-row:last-child { border-bottom: 0; }
-
-    .note {
-      margin-top: 1rem;
-      padding: 0.8rem;
-      border-radius: 12px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-size: 0.9rem;
-      line-height: 1.45;
-    }
-
-    .hidden { display: none !important; }
-
-    footer {
-      width: min(1180px, calc(100% - 2rem));
-      margin: 0 auto 2rem;
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-
-    @media (max-width: 820px) {
-      header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      header .tagline { text-align: left; }
-
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .status-row {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .status-label { text-align: left; }
-    }
-  </style>
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <header>
     <h1>4NICO Shark Risk Advisory</h1>
-    <div class="tagline">Relative conditions, not attack prediction</div>
+    <div class="tagline">Relative shark-related conditions + observation confidence. Not attack prediction.</div>
   </header>
 
   <main>
@@ -244,144 +21,93 @@
       <button type="button" data-view="simulator" aria-selected="false">Counterfactual Simulator</button>
     </nav>
 
-    <section id="swimmer-view" class="layout app-view">
-      <article id="status-card" class="panel status-card" data-flag="GREEN">
-        <div class="status-kicker">Pilot beach advisory</div>
-        <div class="status-row">
-          <div>
-            <h2 id="beach-name" style="margin-bottom:0.5rem;">North Steyne</h2>
-            <p id="status-flag" class="status-flag">GREEN</p>
-          </div>
-          <div id="status-label" class="status-label">Normal Baseline</div>
-        </div>
+    <section id="swimmer-view" class="app-view">
+      <div class="toolbar">
+        <label for="beach-picker"><strong>Beach</strong></label>
+        <select id="beach-picker" aria-label="Pilot beach"></select>
+      </div>
 
-        <div class="metrics">
-          <div class="metric"><span>Environmental score</span><strong id="env-score">0</strong></div>
-          <div class="metric"><span>Observation confidence</span><strong id="conf-label">HIGH</strong></div>
-          <div class="metric"><span>Recent tagged detection</span><strong id="tag-state">NO</strong></div>
-          <div class="metric"><span>Updated</span><strong id="updated-time">Now</strong></div>
-        </div>
-
-        <div class="note">
-          4NICO does not declare a beach safe and does not predict an attack. It communicates current shark-related environmental conditions and how well shark movement can presently be observed.
-        </div>
-      </article>
-
-      <aside class="panel">
-        <h3>Manual pilot inputs</h3>
-        <div class="control-grid">
-          <div class="control">
-            <label for="rainPct">Rainfall percentile <span id="rain-value">0.25</span></label>
-            <input id="rainPct" type="range" min="0" max="1" step="0.01" value="0.25" />
-            <small>Orange threshold contribution begins at 0.75; higher contribution at 0.90.</small>
+      <div class="layout">
+        <article id="status-card" class="panel status-card" data-env="GREEN">
+          <div class="status-kicker">Pilot beach advisory</div>
+          <div class="status-row">
+            <div>
+              <h2 id="beach-name" style="margin-bottom:.5rem">North Steyne</h2>
+              <p id="status-flag" class="status-flag">GREEN</p>
+              <span id="obs-badge" class="obs-badge" data-obs="HIGH">HIGH</span>
+            </div>
+            <div id="status-label" class="status-label">Normal baseline conditions. High observation capability.</div>
           </div>
 
-          <div class="control">
-            <label for="turbidityPct">Turbidity percentile <span id="turbidity-value">0.25</span></label>
-            <input id="turbidityPct" type="range" min="0" max="1" step="0.01" value="0.25" />
-            <small>Score contribution begins at 0.50; higher contribution at 0.80.</small>
+          <div class="metrics">
+            <div class="metric"><span>Environmental score</span><strong id="env-score">0</strong></div>
+            <div class="metric"><span>Observation score</span><strong id="conf-score">3/3</strong></div>
+            <div class="metric"><span>Environmental state</span><strong>GREEN / ORANGE / RED</strong></div>
+            <div class="metric"><span>Updated</span><strong id="updated-time">Now</strong></div>
           </div>
 
-          <div class="control">
-            <label for="sstAnomaly">SST anomaly °C <span id="sst-value">0.0</span></label>
-            <input id="sstAnomaly" type="range" min="-3" max="4" step="0.1" value="0" />
-            <small>+1 point at or above +1.5°C.</small>
-          </div>
+          <ul id="rationale" class="rationale"></ul>
 
-          <div class="toggle-row">
-            <label for="recentTagDetected">Recent tagged shark detected</label>
-            <input id="recentTagDetected" type="checkbox" />
+          <div class="note">
+            GREEN means conditions are within the configured baseline, not that sharks are absent or the beach is safe. A black UNMONITORED badge is independent of environmental colour and indicates a material surveillance blind spot.
           </div>
+        </article>
 
-          <div class="toggle-row">
-            <label for="droneActive">Drone active</label>
-            <input id="droneActive" type="checkbox" checked />
-          </div>
-
-          <div class="toggle-row">
-            <label for="lifeguardActive">Lifeguard active</label>
-            <input id="lifeguardActive" type="checkbox" checked />
-          </div>
-
-          <div class="toggle-row">
-            <label for="turbidityDataOk">Turbidity data available</label>
-            <input id="turbidityDataOk" type="checkbox" checked />
-          </div>
-        </div>
-      </aside>
+        <aside class="panel">
+          <h3>Six-site pilot</h3>
+          <p class="override-note">Every beach carries an environmental state and a separate observation state. RED [UNMONITORED] is therefore possible and intentional.</p>
+          <div id="beach-grid" class="beach-grid"></div>
+        </aside>
+      </div>
     </section>
 
     <section id="lifeguard-view" class="panel app-view hidden">
       <h2>Lifeguard Command Dashboard</h2>
-      <p>This shell is reserved for multi-beach status, verified sighting input, manual override controls, feed-health inspection and event logging.</p>
+      <p>Manual overrides persist in this browser during field testing. Overrides change the displayed state but preserve the underlying calculated scores and are identified in the rationale.</p>
+      <div id="override-list"></div>
+      <div class="note">Pilot control only. Production deployment should add authenticated operators, signed event logs, expiry times, override reason codes and DPI/SLSNSW governance.</div>
     </section>
 
     <section id="simulator-view" class="panel app-view hidden">
-      <h2>Historical Counterfactual Simulator</h2>
-      <p>This shell is reserved for replaying environmental and surveillance states from February 2025 to August 2026 against the deterministic rules engine.</p>
+      <h2>January 2026 Counterfactual Simulator</h2>
+      <p>Scrub the timeline to replay each historical/scenario snapshot through the same deterministic rules engine used by the live cards.</p>
+      <input id="timeline-slider" class="timeline" type="range" min="0" max="0" step="1" value="0" />
+      <div class="timeline-meta"><span id="timeline-start"></span><strong id="timeline-label"></strong><span id="timeline-end"></span></div>
+      <div class="timeline-meta"><span id="timeline-time"></span><span id="timeline-index"></span></div>
+      <div id="replay-provenance" class="note"></div>
+      <div class="note">Public incident timing and synthetic environmental replay inputs are deliberately separated. The simulator becomes evidentiary only after authoritative environmental time series are ingested and provenance is locked.</div>
     </section>
   </main>
 
   <footer>
-    Prototype decision-support interface. GREEN means normal baseline conditions, not “safe”. BLACK means monitoring confidence is low or unavailable.
+    Working pilot. The tool communicates relative conditions and monitoring confidence; it does not predict attacks or declare a beach safe.
   </footer>
 
+  <script src="js/config.js"></script>
   <script src="js/rulesEngine.js"></script>
+  <script src="js/ingestion.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/simulator.js"></script>
   <script>
-    const $ = (id) => document.getElementById(id);
-
-    const inputs = {
-      rainPct: $('rainPct'),
-      turbidityPct: $('turbidityPct'),
-      sstAnomaly: $('sstAnomaly'),
-      recentTagDetected: $('recentTagDetected'),
-      droneActive: $('droneActive'),
-      lifeguardActive: $('lifeguardActive'),
-      turbidityDataOk: $('turbidityDataOk')
-    };
-
-    function renderStatus() {
-      const result = window.FourNICO.evaluateBeachStatus(
-        {
-          rainPct: Number(inputs.rainPct.value),
-          turbidityPct: Number(inputs.turbidityPct.value),
-          sstAnomaly: Number(inputs.sstAnomaly.value),
-          recentTagDetected: inputs.recentTagDetected.checked
-        },
-        {
-          droneActive: inputs.droneActive.checked,
-          lifeguardActive: inputs.lifeguardActive.checked,
-          turbidityDataOk: inputs.turbidityDataOk.checked
-        }
-      );
-
-      $('rain-value').textContent = Number(inputs.rainPct.value).toFixed(2);
-      $('turbidity-value').textContent = Number(inputs.turbidityPct.value).toFixed(2);
-      $('sst-value').textContent = Number(inputs.sstAnomaly.value).toFixed(1);
-      $('status-flag').textContent = result.flag;
-      $('status-label').textContent = result.label;
-      $('env-score').textContent = result.score;
-      $('conf-label').textContent = result.conf;
-      $('tag-state').textContent = inputs.recentTagDetected.checked ? 'YES' : 'NO';
-      $('updated-time').textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      $('status-card').dataset.flag = result.flag;
-    }
-
-    Object.values(inputs).forEach((input) => {
-      input.addEventListener('input', renderStatus);
-      input.addEventListener('change', renderStatus);
-    });
-
-    document.querySelectorAll('[data-view]').forEach((button) => {
+    document.querySelectorAll('[data-view]').forEach(button => {
       button.addEventListener('click', () => {
         const target = button.dataset.view;
-        document.querySelectorAll('[data-view]').forEach((b) => b.setAttribute('aria-selected', String(b === button)));
-        document.querySelectorAll('.app-view').forEach((view) => view.classList.add('hidden'));
+        document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-selected', String(b === button)));
+        document.querySelectorAll('.app-view').forEach(view => view.classList.add('hidden'));
         document.getElementById(`${target}-view`).classList.remove('hidden');
       });
     });
 
-    renderStatus();
+    Promise.all([
+      window.FourNICOIngestion.loadPilotBeaches(),
+      window.FourNICOIngestion.loadIncidentHistory()
+    ]).then(([beachData, history]) => {
+      window.FourNICOUI.init(beachData.beaches);
+      window.FourNICOSimulator.init(history);
+    }).catch(error => {
+      console.error(error);
+      document.body.insertAdjacentHTML('beforeend', `<div class="note" style="margin:1rem">Pilot data failed to load: ${error.message}</div>`);
+    });
   </script>
 </body>
 </html>
