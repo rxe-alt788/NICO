@@ -1,0 +1,13 @@
+# 4NICO validation inputs are ephemeral runner state.
+# Preserve them as GitHub Actions artifacts, not repository history.
+data/raw/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local environment / credentials
+.env
+.env.*
