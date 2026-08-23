@@ -48,6 +48,19 @@ jobs:
           BOM_CDO_STATION: '066214'
         run: python scripts/fetch_bom_cdo.py
 
+      - name: Verify BOM displacement file
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s data/raw/bom_rainfall_history.csv
+          echo "BOM file bytes: $(wc -c < data/raw/bom_rainfall_history.csv)"
+          echo "BOM file rows: $(( $(wc -l < data/raw/bom_rainfall_history.csv) - 1 ))"
+          head -n 3 data/raw/bom_rainfall_history.csv
+          if grep -qi ',true,' data/raw/bom_rainfall_history.csv; then
+            echo "ERROR: observed BOM displacement contains synthetic rows"
+            exit 1
+          fi
+
       - name: Configure ephemeral raw sources
         shell: bash
         run: |
@@ -69,6 +82,21 @@ jobs:
       - name: Generate validation report
         run: python scripts/run_validation.py
 
+      - name: Diagnose processed output diff
+        shell: bash
+        run: |
+          echo "Tracked processed output status:"
+          git status --short -- data/empirical_18m_series.json data/validation_report.md
+          echo "Processed output diff summary:"
+          git diff --stat -- data/empirical_18m_series.json data/validation_report.md || true
+          echo "BOM lineage in processed dataset:"
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('data/empirical_18m_series.json').read_text())
+          print(json.dumps(d.get('sourceStatus',{}).get('bom',{}), indent=2))
+          PY
+
       - name: Preserve raw inputs as audit artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -81,11 +109,12 @@ jobs:
       - name: Commit processed outputs only
         shell: bash
         run: |
+          set -euo pipefail
           git config user.name "4NICO validation bot"
           git config user.email "actions@users.noreply.github.com"
           git add data/empirical_18m_series.json data/validation_report.md
-          if git diff --cached --quiet; then
-            echo "No processed validation changes"
+          if git diff --staged --quiet; then
+            echo "No processed validation changes; clean-diff exit is expected."
             exit 0
           fi
           git commit -m "chore(data): re-evaluate 18m empirical series [skip ci]"
