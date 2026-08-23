@@ -83,27 +83,25 @@ Inputs:
 - rainfall percentile: 85th (`0.85`)
 - turbidity percentile: 60th (`0.60`)
 - SST anomaly: `+0.3 C`
-- one verified tag detection within the configured recent window
+- one verified tag detection occurred sometime in the last 48 hours
 - drone active: yes
 - lifeguard active: yes
 - turbidity data available/current: yes
 
-Environmental score before the tag signal:
+The phrase “in the last 48 hours” is not precise enough for the frozen engine because its configured tag window is **24 hours**.
+
+Environmental score without a qualifying recent tag:
 
 - rainfall >=75th percentile: +1
 - turbidity >=50th percentile: +1
 - SST anomaly below +1.5 C: +0
 
-Subtotal: 2, which would ordinarily be ORANGE.
+Subtotal: **2**, producing `ORANGE`.
 
-The verified recent tag detection adds +3 and independently forces RED. Final environmental score: **5**. Environmental state: **RED**.
+If the verified tag detection occurred **within the last 24 hours**, `recentTagDetected=true`. The engine adds +3 and independently forces `RED`, giving a final score of **5**. With all three observation inputs available, confidence score is 3 and the state is **RED + HIGH**.
 
-All three observation inputs are available, so confidence score is 3 and observation state is **HIGH**.
+If the detection occurred **more than 24 hours ago but no more than 48 hours ago**, it is outside the current configured tag window. No tag points are added. The environmental state remains **ORANGE** and the observation state is **HIGH**.
 
-Output:
-
-- environmental: `RED`
-- observation: `HIGH`
-- operational meaning: concerning configured conditions plus verified recent shark activity, with strong observation coverage. Escalation is immediate.
+This distinction is deliberate documentation of the frozen engine, not threshold tuning.
 
 **The validation machine is complete. The validated shark-risk model is not yet.**
