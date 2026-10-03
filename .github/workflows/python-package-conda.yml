@@ -1,0 +1,70 @@
+import json
+import csv
+from datetime import datetime, timedelta
+import zoneinfo
+from pathlib import Path
+
+# Verify Phase 0 Rules Manifest
+RULES_MANIFEST = Path("artifacts/coogee_2026/rules_manifest.json")
+if not RULES_MANIFEST.exists():
+    raise FileNotFoundError("Missing artifacts/coogee_2026/rules_manifest.json. Run Phase 0 freeze script first.")
+
+# Import your repository's frozen engine
+from nico.engine import evaluate_nico_state
+
+SYDNEY_TZ = zoneinfo.ZoneInfo("Australia/Sydney")
+START_DATE = datetime(2025, 6, 13, 10, 30, tzinfo=SYDNEY_TZ)
+END_DATE = datetime(2026, 6, 13, 10, 30, tzinfo=SYDNEY_TZ)
+
+results = []
+current_dt = START_DATE
+
+print(f"Starting Phase 6 Backtest ({START_DATE.date()} to {END_DATE.date()})...")
+
+while current_dt <= END_DATE:
+    date_str = current_dt.strftime("%Y-%m-%d")
+    telemetry_path = Path(f"data/processed/daily_snapshots/{date_str}_1030.json")
+    
+    if not telemetry_path.exists():
+        # Preserve missingness (Phase 4 Rule)
+        state_result = {
+            "date": date_str,
+            "timestamp": current_dt.isoformat(),
+            "environmental_state": "INSUFFICIENT_DATA",
+            "observation_state": "MISSING",
+            "final_state": "INSUFFICIENT_DATA",
+            "environmental_score": None,
+            "data_completeness": 0.0,
+            "rule_triggers": [],
+            "source_availability": "NONE"
+        }
+    else:
+        with open(telemetry_path, "r") as f:
+            inputs = json.load(f)
+        
+        evaluation = evaluate_nico_state(inputs)
+        
+        state_result = {
+            "date": date_str,
+            "timestamp": current_dt.isoformat(),
+            "environmental_state": evaluation.get("env_state"),
+            "observation_state": evaluation.get("obs_state"),
+            "final_state": evaluation.get("final_state"),
+            "environmental_score": evaluation.get("score"),
+            "data_completeness": evaluation.get("completeness"),
+            "rule_triggers": evaluation.get("triggers"),
+            "source_availability": evaluation.get("sources")
+        }
+
+    results.append(state_result)
+    current_dt += timedelta(days=1)
+
+output_file = Path("data/processed/coogee_backtest_daily_2025-06-13_2026-06-13.csv")
+output_file.parent.mkdir(parents=True, exist_ok=True)
+
+with open(output_file, "w", newline="") as f:
+    writer = csv.DictWriter(f, fieldnames=list(results[0].keys()))
+    writer.writeheader()
+    writer.writerows(results)
+
+print(f"Completed: Processed {len(results)} daily 10:30 AEST records -> {output_file}")
