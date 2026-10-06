@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.4.0",
-  "generatedAt": "2026-10-04T22:06:57.610743+00:00",
+  "generatedAt": "2026-10-06T00:30:01.321377+00:00",
   "qualityRule": "Missing normalized model inputs never imply low risk.",
   "sources": {
     "bom": {
@@ -42,9 +42,9 @@
       },
       "bomContext": {
         "station": "Sydney - Observatory Hill",
-        "timestampUtc": "20261004220000",
+        "timestampUtc": "20261006000000",
         "rainSince9amMm": "0.0",
-        "airTempC": 16.9,
+        "airTempC": 23.2,
         "windKmh": 9,
         "windDirection": "W"
       },
@@ -80,9 +80,9 @@
       },
       "bomContext": {
         "station": "Sydney - Observatory Hill",
-        "timestampUtc": "20261004220000",
+        "timestampUtc": "20261006000000",
         "rainSince9amMm": "0.0",
-        "airTempC": 16.9,
+        "airTempC": 23.2,
         "windKmh": 9,
         "windDirection": "W"
       },
@@ -118,9 +118,9 @@
       },
       "bomContext": {
         "station": "Sydney - Observatory Hill",
-        "timestampUtc": "20261004220000",
+        "timestampUtc": "20261006000000",
         "rainSince9amMm": "0.0",
-        "airTempC": 16.9,
+        "airTempC": 23.2,
         "windKmh": 9,
         "windDirection": "W"
       },
@@ -156,11 +156,11 @@
       },
       "bomContext": {
         "station": "Sydney Airport",
-        "timestampUtc": "20261004213000",
+        "timestampUtc": "20261006000000",
         "rainSince9amMm": "0.0",
-        "airTempC": 16.8,
-        "windKmh": 9,
-        "windDirection": "WNW"
+        "airTempC": 23.3,
+        "windKmh": 15,
+        "windDirection": "NW"
       },
       "dataCompleteness": {
         "coreFieldsAvailable": 0,
@@ -194,11 +194,11 @@
       },
       "bomContext": {
         "station": "Sydney Airport",
-        "timestampUtc": "20261004213000",
+        "timestampUtc": "20261006000000",
         "rainSince9amMm": "0.0",
-        "airTempC": 16.8,
-        "windKmh": 9,
-        "windDirection": "WNW"
+        "airTempC": 23.3,
+        "windKmh": 15,
+        "windDirection": "NW"
       },
       "dataCompleteness": {
         "coreFieldsAvailable": 0,
@@ -232,9 +232,9 @@
       },
       "bomContext": {
         "station": "Sydney - Observatory Hill",
-        "timestampUtc": "20261004220000",
+        "timestampUtc": "20261006000000",
         "rainSince9amMm": "0.0",
-        "airTempC": 16.9,
+        "airTempC": 23.2,
         "windKmh": 9,
         "windDirection": "W"
       },
@@ -253,5 +253,5 @@
       }
     }
   },
-  "evaluatedAt": "2026-10-04T22:06:58.007Z"
+  "evaluatedAt": "2026-10-06T00:30:01.660Z"
 }
