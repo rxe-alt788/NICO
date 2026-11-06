@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.4.0",
-  "generatedAt": "2026-11-05T23:53:24.278246+00:00",
+  "generatedAt": "2026-11-06T23:35:27.040752+00:00",
   "qualityRule": "Missing normalized model inputs never imply low risk.",
   "sources": {
     "bom": {
@@ -42,11 +42,11 @@
       },
       "bomContext": {
         "station": "Sydney - Observatory Hill",
-        "timestampUtc": "20261105233000",
+        "timestampUtc": "20261106233000",
         "rainSince9amMm": "0.0",
-        "airTempC": 21.8,
+        "airTempC": 25.9,
         "windKmh": 4,
-        "windDirection": "E"
+        "windDirection": "SSE"
       },
       "dataCompleteness": {
         "coreFieldsAvailable": 0,
@@ -80,11 +80,11 @@
       },
       "bomContext": {
         "station": "Sydney - Observatory Hill",
-        "timestampUtc": "20261105233000",
+        "timestampUtc": "20261106233000",
         "rainSince9amMm": "0.0",
-        "airTempC": 21.8,
+        "airTempC": 25.9,
         "windKmh": 4,
-        "windDirection": "E"
+        "windDirection": "SSE"
       },
       "dataCompleteness": {
         "coreFieldsAvailable": 0,
@@ -118,11 +118,11 @@
       },
       "bomContext": {
         "station": "Sydney - Observatory Hill",
-        "timestampUtc": "20261105233000",
+        "timestampUtc": "20261106233000",
         "rainSince9amMm": "0.0",
-        "airTempC": 21.8,
+        "airTempC": 25.9,
         "windKmh": 4,
-        "windDirection": "E"
+        "windDirection": "SSE"
       },
       "dataCompleteness": {
         "coreFieldsAvailable": 0,
@@ -156,11 +156,11 @@
       },
       "bomContext": {
         "station": "Sydney Airport",
-        "timestampUtc": "20261105233000",
+        "timestampUtc": "20261106230000",
         "rainSince9amMm": "0.0",
-        "airTempC": 19.7,
+        "airTempC": 25.3,
         "windKmh": 13,
-        "windDirection": "ESE"
+        "windDirection": "WNW"
       },
       "dataCompleteness": {
         "coreFieldsAvailable": 0,
@@ -194,11 +194,11 @@
       },
       "bomContext": {
         "station": "Sydney Airport",
-        "timestampUtc": "20261105233000",
+        "timestampUtc": "20261106230000",
         "rainSince9amMm": "0.0",
-        "airTempC": 19.7,
+        "airTempC": 25.3,
         "windKmh": 13,
-        "windDirection": "ESE"
+        "windDirection": "WNW"
       },
       "dataCompleteness": {
         "coreFieldsAvailable": 0,
@@ -232,11 +232,11 @@
       },
       "bomContext": {
         "station": "Sydney - Observatory Hill",
-        "timestampUtc": "20261105233000",
+        "timestampUtc": "20261106233000",
         "rainSince9amMm": "0.0",
-        "airTempC": 21.8,
+        "airTempC": 25.9,
         "windKmh": 4,
-        "windDirection": "E"
+        "windDirection": "SSE"
       },
       "dataCompleteness": {
         "coreFieldsAvailable": 0,
@@ -253,5 +253,5 @@
       }
     }
   },
-  "evaluatedAt": "2026-11-05T23:53:24.320Z"
+  "evaluatedAt": "2026-11-06T23:35:27.079Z"
 }
